@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider } from '../lib/theme-clean';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import IdleTimeoutBanner from '../components/IdleTimeoutBanner';
