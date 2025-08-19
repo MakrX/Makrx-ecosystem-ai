@@ -1,9 +1,11 @@
-import { Docs } from '../../components/page-components/PlaceholderPage';
+'use client';
 
-export const metadata = {
-  title: 'Documentation',
-  description: 'Access comprehensive documentation, guides, and API references.',
-};
+import dynamic from 'next/dynamic';
+
+const Docs = dynamic(() => import('../../components/page-components/PlaceholderPage').then(mod => ({ default: mod.Docs })), {
+  ssr: false,
+  loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
+});
 
 export default function DocsPage() {
   return <Docs />;
