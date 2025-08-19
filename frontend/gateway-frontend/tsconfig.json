@@ -1,29 +1,42 @@
 {
-    "extends": "../../tsconfig.base.json",
-    "compilerOptions": {
-        "paths": {
-            "@/*": ["frontend/gateway-frontend/src/*"],
-            "@components/*": ["frontend/gateway-frontend/components/*"],
-            "@contexts/*": ["frontend/gateway-frontend/contexts/*"],
-            "@pages/*": ["frontend/gateway-frontend/pages/*"],
-            "@hooks/*": ["frontend/gateway-frontend/hooks/*"],
-            "@lib/*": ["frontend/gateway-frontend/lib/*"],
-            "@makrx/ui": ["../../packages/ui"],
-            "@makrx/types": ["../../packages/types"],
-            "@makrx/utils": ["../../packages/utils"],
-            "@makrx/feature-flags": ["../../packages/feature-flags/src"]
-        }
-    },
-    "include": [
-        "src/**/*",
-        "components/**/*",
-        "contexts/**/*",
-        "pages/**/*",
-        "hooks/**/*",
-        "lib/**/*",
-        "*.ts",
-        "*.tsx",
-        "vite.config.ts"
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["dom", "dom.iterable", "es6"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
     ],
-    "exclude": ["node_modules", "dist"]
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/components/*": ["./components/*"],
+      "@/lib/*": ["./lib/*"],
+      "@/hooks/*": ["./hooks/*"],
+      "@makrx/ui": ["../../packages/ui"],
+      "@makrx/types": ["../../packages/types"],
+      "@makrx/utils": ["../../packages/utils"],
+      "@makrx/feature-flags": ["../../packages/feature-flags/src"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
