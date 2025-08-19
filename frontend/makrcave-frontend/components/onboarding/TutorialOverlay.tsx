@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
-import { 
-  X, ArrowRight, ArrowLeft, Play, Pause, RotateCcw, 
+import {
+  X, ArrowRight, ArrowLeft, Play, Pause, RotateCcw,
   Lightbulb, Target, MousePointer, Keyboard, Eye,
-  CheckCircle, Skip, Zap, BookOpen
+  CheckCircle, SkipForward, Zap, BookOpen
 } from 'lucide-react';
 
 interface TutorialStep {
