@@ -7,7 +7,11 @@
       "@contexts/*": ["frontend/gateway-frontend/contexts/*"],
       "@pages/*": ["frontend/gateway-frontend/pages/*"],
       "@hooks/*": ["frontend/gateway-frontend/hooks/*"],
-      "@lib/*": ["frontend/gateway-frontend/lib/*"]
+      "@lib/*": ["frontend/gateway-frontend/lib/*"],
+      "@makrx/ui": ["../../packages/ui"],
+      "@makrx/types": ["../../packages/types"],
+      "@makrx/utils": ["../../packages/utils"],
+      "@makrx/feature-flags": ["../../packages/feature-flags/src"]
     }
   },
   "include": [
