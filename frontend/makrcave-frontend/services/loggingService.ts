@@ -224,12 +224,14 @@ class LoggingService {
 
   private persistLogs(): void {
     try {
-      // Only persist error and critical logs to save space
-      const criticalLogs = this.logs.filter(log => 
-        ['error', 'critical'].includes(log.level)
-      ).slice(0, 50);
-      
-      localStorage.setItem('makrcave_logs', JSON.stringify(criticalLogs));
+      if (typeof window !== 'undefined') {
+        // Only persist error and critical logs to save space
+        const criticalLogs = this.logs.filter(log =>
+          ['error', 'critical'].includes(log.level)
+        ).slice(0, 50);
+
+        localStorage.setItem('makrcave_logs', JSON.stringify(criticalLogs));
+      }
     } catch (error) {
       console.warn('Failed to persist logs:', error);
     }
