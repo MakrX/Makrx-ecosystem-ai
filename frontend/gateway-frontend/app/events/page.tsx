@@ -1,9 +1,11 @@
-import { Events } from '../../components/page-components/PlaceholderPage';
+'use client';
 
-export const metadata = {
-  title: 'Events',
-  description: 'Discover upcoming maker events, workshops, and community gatherings.',
-};
+import dynamic from 'next/dynamic';
+
+const Events = dynamic(() => import('../../components/page-components/PlaceholderPage').then(mod => ({ default: mod.Events })), {
+  ssr: false,
+  loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
+});
 
 export default function EventsPage() {
   return <Events />;
