@@ -1,9 +1,11 @@
-import { Blog } from '../../components/page-components/PlaceholderPage';
+'use client';
 
-export const metadata = {
-  title: 'Blog',
-  description: 'Read the latest news, tutorials, and insights from the MakrX community.',
-};
+import dynamic from 'next/dynamic';
+
+const Blog = dynamic(() => import('../../components/page-components/PlaceholderPage').then(mod => ({ default: mod.Blog })), {
+  ssr: false,
+  loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
+});
 
 export default function BlogPage() {
   return <Blog />;
