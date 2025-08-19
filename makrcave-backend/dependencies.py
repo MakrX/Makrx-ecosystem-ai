@@ -14,6 +14,7 @@ from schemas.auth_error import AuthError
 from security import jwks
 from security.events import SecurityEventType, log_security_event
 from security.helpers import set_request_context
+from security.jwt_validator import SecureJWTValidator
 
 # Configure logging
 logger = logging.getLogger(__name__)
