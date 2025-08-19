@@ -158,10 +158,12 @@ class LoggingService {
 
     // Add user context if available
     try {
-      const authContext = JSON.parse(localStorage.getItem('auth_context') || '{}');
-      if (authContext.user) {
-        entry.userId = authContext.user.id;
-        entry.userRole = authContext.user.role;
+      if (typeof window !== 'undefined') {
+        const authContext = JSON.parse(localStorage.getItem('auth_context') || '{}');
+        if (authContext.user) {
+          entry.userId = authContext.user.id;
+          entry.userRole = authContext.user.role;
+        }
       }
     } catch (error) {
       // Ignore auth context errors
