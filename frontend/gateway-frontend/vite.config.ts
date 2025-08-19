@@ -52,7 +52,7 @@ export default defineConfig({
   server: {
     // Development server configuration
     host: true,
-    port: 3000,
+    port: 8080,
     open: false,
     cors: true,
     // Enable HMR
@@ -63,7 +63,7 @@ export default defineConfig({
   preview: {
     // Preview server configuration
     host: true,
-    port: 3000,
+    port: 8080,
     cors: true,
   },
   // Optimize dependencies
