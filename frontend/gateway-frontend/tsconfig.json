@@ -1,29 +1,29 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "paths": {
-      "@/*": ["frontend/gateway-frontend/src/*"],
-      "@components/*": ["frontend/gateway-frontend/components/*"],
-      "@contexts/*": ["frontend/gateway-frontend/contexts/*"],
-      "@pages/*": ["frontend/gateway-frontend/pages/*"],
-      "@hooks/*": ["frontend/gateway-frontend/hooks/*"],
-      "@lib/*": ["frontend/gateway-frontend/lib/*"],
-      "@makrx/ui": ["../../packages/ui"],
-      "@makrx/types": ["../../packages/types"],
-      "@makrx/utils": ["../../packages/utils"],
-      "@makrx/feature-flags": ["../../packages/feature-flags/src"]
-    }
-  },
-  "include": [
-    "src/**/*",
-    "components/**/*",
-    "contexts/**/*",
-    "pages/**/*",
-    "hooks/**/*",
-    "lib/**/*",
-    "*.ts",
-    "*.tsx",
-    "vite.config.ts"
-  ],
-  "exclude": ["node_modules", "dist"]
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "paths": {
+            "@/*": ["frontend/gateway-frontend/src/*"],
+            "@components/*": ["frontend/gateway-frontend/components/*"],
+            "@contexts/*": ["frontend/gateway-frontend/contexts/*"],
+            "@pages/*": ["frontend/gateway-frontend/pages/*"],
+            "@hooks/*": ["frontend/gateway-frontend/hooks/*"],
+            "@lib/*": ["frontend/gateway-frontend/lib/*"],
+            "@makrx/ui": ["../../packages/ui"],
+            "@makrx/types": ["../../packages/types"],
+            "@makrx/utils": ["../../packages/utils"],
+            "@makrx/feature-flags": ["../../packages/feature-flags/src"]
+        }
+    },
+    "include": [
+        "src/**/*",
+        "components/**/*",
+        "contexts/**/*",
+        "pages/**/*",
+        "hooks/**/*",
+        "lib/**/*",
+        "*.ts",
+        "*.tsx",
+        "vite.config.ts"
+    ],
+    "exclude": ["node_modules", "dist"]
 }
