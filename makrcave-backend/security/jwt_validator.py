@@ -56,10 +56,10 @@ class SecureJWTValidator:
         self.issuer = f"{keycloak_url}/realms/{realm}"
     
     async def validate_token(
-        self, 
-        token: str, 
+        self,
+        token: str,
         key: str,
-        request_id: Optional[str] = None,
+        request: Request,
         additional_audiences: Optional[List[str]] = None
     ) -> Dict[str, Any]:
         """
