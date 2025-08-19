@@ -1,9 +1,13 @@
-import Login from '../../pages/Login';
+'use client';
 
-export const metadata = {
-  title: 'Login',
-  description: 'Sign in to your MakrCave account.',
-};
+import dynamicImport from 'next/dynamic';
+
+export const dynamic = 'force-dynamic';
+
+const Login = dynamicImport(() => import('../../pages/Login'), {
+  ssr: false,
+  loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
+});
 
 export default function LoginPage() {
   return <Login />;
