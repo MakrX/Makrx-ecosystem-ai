@@ -193,11 +193,12 @@ class SecureJWTValidator:
                 )
         
         except Exception as e:
+            request_id = getattr(request.state, "request_id", "unknown")
             logger.error(f"Unexpected JWT validation error: {str(e)} (request: {request_id})")
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=self._create_error("Authentication failed", "auth_failed", request_id),
-                headers={"WWW-Authenticate": "Bearer"},
+            raise create_jwt_error_response(
+                JWTErrorType.MALFORMED_TOKEN,
+                request,
+                error_details={"unexpected_error": str(e), "error_type": type(e).__name__}
             )
     
     async def _validate_token_security(self, payload: Dict[str, Any], request_id: Optional[str]) -> None:
