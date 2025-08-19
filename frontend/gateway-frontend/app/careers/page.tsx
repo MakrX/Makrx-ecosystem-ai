@@ -1,4 +1,4 @@
-import Careers from '../../components/pages/Careers';
+import { Careers } from '../../components/page-components/PlaceholderPage';
 
 export const metadata = {
   title: 'Careers',

@@ -1,4 +1,4 @@
-import Contact from '../../components/pages/Contact';
+import Contact from '../../components/page-components/Contact';
 
 export const metadata = {
   title: 'Contact',

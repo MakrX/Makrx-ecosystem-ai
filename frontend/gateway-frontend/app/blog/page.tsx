@@ -1,4 +1,4 @@
-import Blog from '../../components/pages/Blog';
+import { Blog } from '../../components/page-components/PlaceholderPage';
 
 export const metadata = {
   title: 'Blog',
