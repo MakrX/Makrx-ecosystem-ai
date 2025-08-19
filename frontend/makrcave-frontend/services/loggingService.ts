@@ -87,6 +87,8 @@ class LoggingService {
   }
 
   private setupGlobalErrorHandlers(): void {
+    if (typeof window === 'undefined') return;
+
     // Global error handler for unhandled errors
     window.addEventListener('error', (event) => {
       this.error('system', 'Global Error Handler', event.error?.message || 'Unknown error', {
