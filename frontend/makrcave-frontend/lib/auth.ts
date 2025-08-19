@@ -24,12 +24,19 @@ export interface User {
   scopes: string[];
 }
 
-// Keycloak instance
-const keycloak: KeycloakInstance = new Keycloak({
-  url: KEYCLOAK_URL,
-  realm: REALM,
-  clientId: CLIENT_ID,
-});
+// Keycloak instance - only initialize on client side
+let keycloak: KeycloakInstance | null = null;
+
+const getKeycloak = (): KeycloakInstance => {
+  if (!keycloak && typeof window !== 'undefined') {
+    keycloak = new Keycloak({
+      url: KEYCLOAK_URL,
+      realm: REALM,
+      clientId: CLIENT_ID,
+    });
+  }
+  return keycloak!;
+};
 
 // Auth state management
 let authListeners: Array<(user: User | null) => void> = [];
