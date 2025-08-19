@@ -8,13 +8,11 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Disable SSR/SSG to prevent useContext errors during build
-  output: 'export',
-  trailingSlash: true,
-  distDir: '.next',
+  // Force dynamic rendering for all pages
   experimental: {
-    esmExternals: true,
+    dynamicIO: true,
   },
+  generateStaticParams: false,
 };
 
 module.exports = nextConfig;
