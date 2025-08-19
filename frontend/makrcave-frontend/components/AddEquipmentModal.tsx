@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  X, Save,
-  Calendar, MapPin, Tag, FileText, Settings, AlertTriangle
-} from 'lucide-react';
+import { X, Save } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 interface Equipment {
