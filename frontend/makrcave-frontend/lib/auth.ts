@@ -87,13 +87,14 @@ export const init = async (): Promise<boolean> => {
 // Token management
 export const getToken = async (): Promise<string | null> => {
   await init();
-  if (!keycloak.authenticated) return null;
+  const kc = getKeycloak();
+  if (!kc.authenticated) return null;
   try {
-    await keycloak.updateToken(60);
-    if (keycloak.token) {
-      localStorage.setItem('auth_token', keycloak.token);
+    await kc.updateToken(60);
+    if (kc.token) {
+      localStorage.setItem('auth_token', kc.token);
     }
-    return keycloak.token ?? null;
+    return kc.token ?? null;
   } catch {
     sessionStorage.setItem("makrx_redirect_url", window.location.href);
     window.alert("Session expired. Please log in again.");
