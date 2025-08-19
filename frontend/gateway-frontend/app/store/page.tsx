@@ -1,4 +1,4 @@
-import Store from '../../components/pages/Store';
+import { Store } from '../../components/page-components/PlaceholderPage';
 
 export const metadata = {
   title: 'Store',

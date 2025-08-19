@@ -1,4 +1,4 @@
-import ServiceProviders from '../../components/pages/ServiceProviders';
+import { ServiceProviders } from '../../components/page-components/PlaceholderPage';
 
 export const metadata = {
   title: 'Service Providers',

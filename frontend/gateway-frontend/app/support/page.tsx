@@ -1,4 +1,4 @@
-import Support from '../../components/pages/Support';
+import { Support } from '../../components/page-components/PlaceholderPage';
 
 export const metadata = {
   title: 'Support',
