@@ -1,9 +1,12 @@
-import Contact from '../../components/page-components/Contact';
+'use client';
 
-export const metadata = {
-  title: 'Contact',
-  description: 'Get in touch with the MakrX team for inquiries and support.',
-};
+import dynamic from 'next/dynamic';
+import { Metadata } from 'next';
+
+const Contact = dynamic(() => import('../../components/page-components/Contact'), {
+  ssr: false,
+  loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
+});
 
 export default function ContactPage() {
   return <Contact />;
