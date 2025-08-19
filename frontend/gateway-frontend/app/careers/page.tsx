@@ -1,10 +1,10 @@
 'use client';
 
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 
 export const dynamic = 'force-dynamic';
 
-const Careers = dynamic(() => import('../../components/page-components/PlaceholderPage').then(mod => ({ default: mod.Careers })), {
+const Careers = dynamicImport(() => import('../../components/page-components/PlaceholderPage').then(mod => ({ default: mod.Careers })), {
   ssr: false,
   loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
 });
