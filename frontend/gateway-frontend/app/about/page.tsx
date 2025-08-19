@@ -1,9 +1,11 @@
-import About from '../../components/page-components/About';
+'use client';
 
-export const metadata = {
-  title: 'About Us',
-  description: 'Learn about MakrX and our mission to revolutionize digital manufacturing in India.',
-};
+import dynamic from 'next/dynamic';
+
+const About = dynamic(() => import('../../components/page-components/About'), {
+  ssr: false,
+  loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
+});
 
 export default function AboutPage() {
   return <About />;
