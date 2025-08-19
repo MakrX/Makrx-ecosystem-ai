@@ -4,7 +4,7 @@ import React from 'react';
 import { AuthProvider } from '../contexts/AuthContext';
 import { MakerspaceProvider } from '../contexts/MakerspaceContext';
 import { FeatureFlagProvider } from '../contexts/FeatureFlagContext';
-import { ThemeProvider } from '../../packages/ui/contexts/ThemeContext';
+import { ThemeProvider } from '@makrx/ui/contexts/ThemeContext';
 import { NotificationProvider } from '../contexts/NotificationContext';
 import { MemberProvider } from '../contexts/MemberContext';
 import { BillingProvider } from '../contexts/BillingContext';
