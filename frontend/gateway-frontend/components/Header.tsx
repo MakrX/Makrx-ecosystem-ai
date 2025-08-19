@@ -1,12 +1,15 @@
+'use client';
+
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X, ExternalLink, Grid3X3 } from "lucide-react";
 import { ThemeToggle } from "../lib/theme-clean";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showLauncher, setShowLauncher] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
 
   const isActive = (path: string) => location.pathname === path;
 
