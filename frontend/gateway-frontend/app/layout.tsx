@@ -99,12 +99,7 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider>
           <IdleTimeoutBanner />
           <div className="min-h-screen flex flex-col">
             {/* Skip Link for Accessibility */}
