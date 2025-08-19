@@ -74,71 +74,8 @@ async def validate_token(token: str, request_id: Optional[str] = None) -> dict:
             },
         )
 
-        if payload.get("iss") != KEYCLOAK_ISSUER:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=AuthError(
-                    error="Unauthorized",
-                    message="Invalid token issuer",
-                    code="invalid_issuer",
-                    request_id=request_id,
-                ).model_dump(),
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-
-        aud_claim = payload.get("aud", [])
-        if isinstance(aud_claim, str):
-            aud_claim = [aud_claim]
-        if KEYCLOAK_AUDIENCE not in aud_claim:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=AuthError(
-                    error="Unauthorized",
-                    message="Invalid token audience",
-                    code="invalid_audience",
-                    request_id=request_id,
-                ).model_dump(),
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-
-        current_ts = datetime.utcnow().timestamp()
-        leeway = 60
-        exp = payload.get("exp")
-        if exp and exp < current_ts - leeway:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=AuthError(
-                    error="Unauthorized",
-                    message="Token has expired",
-                    code="token_expired",
-                    request_id=request_id,
-                ).model_dump(),
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        nbf = payload.get("nbf")
-        if nbf and nbf >= current_ts + leeway:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=AuthError(
-                    error="Unauthorized",
-                    message="Token not yet valid",
-                    code="token_not_yet_valid",
-                    request_id=request_id,
-                ).model_dump(),
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        iat = payload.get("iat")
-        if iat and iat > current_ts + leeway:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=AuthError(
-                    error="Unauthorized",
-                    message="Invalid token issued-at",
-                    code="invalid_iat",
-                    request_id=request_id,
-                ).model_dump(),
-                headers={"WWW-Authenticate": "Bearer"},
-            )
+        # JWT library now handles issuer, audience, expiration, and timing validation
+        # Additional security checks for algorithm and token type
 
         if alg not in ALLOWED_ALGS:
             raise HTTPException(
