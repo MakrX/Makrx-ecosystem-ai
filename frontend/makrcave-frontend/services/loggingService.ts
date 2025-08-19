@@ -151,8 +151,8 @@ class LoggingService {
       message,
       metadata,
       sessionId: this.sessionId,
-      url: window.location.href,
-      userAgent: navigator.userAgent,
+      url: typeof window !== 'undefined' ? window.location.href : '',
+      userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
       stackTrace
     };
 
