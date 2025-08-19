@@ -8,11 +8,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Force dynamic rendering for all pages
-  experimental: {
-    dynamicIO: true,
-  },
-  generateStaticParams: false,
 };
 
 module.exports = nextConfig;
