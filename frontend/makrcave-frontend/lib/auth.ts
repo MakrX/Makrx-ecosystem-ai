@@ -105,7 +105,9 @@ export const getToken = async (): Promise<string | null> => {
 
 // User helpers
 export const getCurrentUser = (): User | null => {
-  const parsed = keycloak.tokenParsed as Record<string, any> | undefined;
+  if (typeof window === 'undefined') return null;
+  const kc = getKeycloak();
+  const parsed = kc.tokenParsed as Record<string, any> | undefined;
   if (!parsed) return null;
   return {
     sub: parsed.sub,
@@ -118,10 +120,17 @@ export const getCurrentUser = (): User | null => {
   };
 };
 
-export const isAuthenticated = (): boolean => !!keycloak.authenticated;
+export const isAuthenticated = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  const kc = getKeycloak();
+  return !!kc.authenticated;
+};
 
-export const hasRole = (role: string): boolean =>
-  keycloak.hasRealmRole ? keycloak.hasRealmRole(role) : false;
+export const hasRole = (role: string): boolean => {
+  if (typeof window === 'undefined') return false;
+  const kc = getKeycloak();
+  return kc.hasRealmRole ? kc.hasRealmRole(role) : false;
+};
 
 export const hasAnyRole = (roles: string[]): boolean =>
   roles.some((r) => hasRole(r));
