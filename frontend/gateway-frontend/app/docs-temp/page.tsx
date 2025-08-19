@@ -4,7 +4,7 @@ import dynamicImport from 'next/dynamic';
 
 export const dynamic = 'force-dynamic';
 
-const Docs = dynamicImport(() => import('../../components/page-components/PlaceholderPage').then(mod => ({ default: mod.Docs })), {
+const Docs = dynamicImport(() => import('../../components/page-components/PlaceholderPageSimple'), {
   ssr: false,
   loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
 });
