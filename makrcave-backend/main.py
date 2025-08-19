@@ -56,7 +56,10 @@ app.add_middleware(
 # Add security middleware (after CORS)
 add_security_middleware(app)
 
-# Global exception handler
+# Add unified error handling middleware
+app.add_middleware(ErrorHandlingMiddleware)
+
+# Global exception handler (fallback)
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):
     return JSONResponse(
