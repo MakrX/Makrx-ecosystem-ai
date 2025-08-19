@@ -146,7 +146,8 @@ export const login = (options?: KeycloakLoginOptions): void => {
 
   // Store original URL for redirect after login
   sessionStorage.setItem("makrx_redirect_url", window.location.href);
-  keycloak.login({
+  const kc = getKeycloak();
+  kc.login({
     redirectUri: window.location.origin + "/auth/callback",
     ...options,
   });
@@ -155,7 +156,8 @@ export const login = (options?: KeycloakLoginOptions): void => {
 export const register = (options?: KeycloakLoginOptions): void => {
   if (!isClient) return;
   sessionStorage.setItem("makrx_redirect_url", window.location.href);
-  keycloak.register({
+  const kc = getKeycloak();
+  kc.register({
     redirectUri: window.location.origin + "/auth/callback",
     ...options,
   });
