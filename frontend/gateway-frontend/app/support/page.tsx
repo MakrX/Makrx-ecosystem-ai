@@ -1,9 +1,11 @@
-import { Support } from '../../components/page-components/PlaceholderPage';
+'use client';
 
-export const metadata = {
-  title: 'Support',
-  description: 'Get help and support for all MakrX services and platforms.',
-};
+import dynamic from 'next/dynamic';
+
+const Support = dynamic(() => import('../../components/page-components/PlaceholderPage').then(mod => ({ default: mod.Support })), {
+  ssr: false,
+  loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
+});
 
 export default function SupportPage() {
   return <Support />;
