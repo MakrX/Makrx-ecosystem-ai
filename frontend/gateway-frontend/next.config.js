@@ -8,6 +8,10 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  output: 'standalone',
+  experimental: {
+    runtime: 'nodejs',
+  },
 };
 
 module.exports = nextConfig;
