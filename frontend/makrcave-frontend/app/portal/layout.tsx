@@ -10,9 +10,7 @@ export default function PortalLayout({
 }) {
   return (
     <ProtectedRoute>
-      <Layout>
-        {children}
-      </Layout>
+      <Layout children={children} />
     </ProtectedRoute>
   );
 }
