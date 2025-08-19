@@ -115,7 +115,7 @@ async def get_current_token(
 
     request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
     token = credentials.credentials
-    payload = await validate_token(token, request_id=request_id)
+    payload = await validate_token(token, request)
     set_request_context(
         request_id=request_id,
         sub=payload.get("sub"),
