@@ -50,7 +50,7 @@ class CurrentUser:
         self.makerspace_id = makerspace_id
 
 
-async def validate_token(token: str, request_id: Optional[str] = None) -> dict:
+async def validate_token(token: str, request: Request) -> dict:
     """Validate token using standardized secure JWT validator"""
     try:
         header = jwt.get_unverified_header(token)
