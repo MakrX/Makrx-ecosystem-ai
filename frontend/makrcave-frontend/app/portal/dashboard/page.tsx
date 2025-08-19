@@ -1,9 +1,13 @@
-import Dashboard from '../../../pages/Dashboard';
+'use client';
 
-export const metadata = {
-  title: 'Dashboard',
-  description: 'MakrCave dashboard overview.',
-};
+import dynamicImport from 'next/dynamic';
+
+export const dynamic = 'force-dynamic';
+
+const Dashboard = dynamicImport(() => import('../../../pages/Dashboard'), {
+  ssr: false,
+  loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
+});
 
 export default function DashboardPage() {
   return <Dashboard />;
