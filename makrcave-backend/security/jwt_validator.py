@@ -7,8 +7,14 @@ import logging
 from typing import Dict, Any, Optional, List
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Request
 from schemas.auth_error import AuthError
+from .jwt_error_handler import (
+    JWTErrorType,
+    create_jwt_error_response,
+    check_ip_blocked,
+    jwt_security_logger
+)
 
 logger = logging.getLogger(__name__)
 
