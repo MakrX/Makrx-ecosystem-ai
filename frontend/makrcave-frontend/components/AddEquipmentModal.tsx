@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-  X, Save, DollarSign,
+  X, Save,
   Calendar, MapPin, Tag, FileText, Settings, AlertTriangle
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
