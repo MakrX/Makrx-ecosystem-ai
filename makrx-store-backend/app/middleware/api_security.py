@@ -508,7 +508,16 @@ def setup_api_security(app: FastAPI):
         allow_origins=allowed_origins,
         allow_credentials=True,
         allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH"],
-        allow_headers=["*"],
+        allow_headers=[
+            "Accept",
+            "Accept-Language",
+            "Content-Language",
+            "Content-Type",
+            "Authorization",
+            "X-Requested-With",
+            "X-CSRF-Token",
+            "X-Request-ID"
+        ],
         expose_headers=["X-Request-ID", "X-Response-Time"]
     )
     
