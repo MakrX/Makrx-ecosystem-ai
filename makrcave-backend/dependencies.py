@@ -51,60 +51,17 @@ class CurrentUser:
 
 
 async def validate_token(token: str, request_id: Optional[str] = None) -> dict:
-    """Validate token using Keycloak JWKS"""
+    """Validate token using standardized secure JWT validator"""
     try:
         header = jwt.get_unverified_header(token)
         kid = header.get("kid")
-        alg = header.get("alg")
 
         key = await jwks.get_jwk(kid, JWKS_URL)
 
-        payload = jwt.decode(
-            token,
-            key,
-            algorithms=[alg],
-            audience=KEYCLOAK_AUDIENCE,
-            issuer=KEYCLOAK_ISSUER,
-            options={
-                "verify_aud": True,
-                "verify_iss": True,
-                "verify_iat": True,
-                "verify_nbf": True,
-                "verify_exp": True,
-                "verify_signature": True,
-                "require_exp": True,
-                "require_iat": True,
-                "require_nbf": False,
-            },
-        )
+        # Use standardized validator for comprehensive security checks
+        payload = await jwt_validator.validate_token(token, key, request_id)
 
-        # JWT library now handles issuer, audience, expiration, and timing validation
-        # Additional security checks for algorithm and token type
-
-        if alg not in ALLOWED_ALGS:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=AuthError(
-                    error="Unauthorized",
-                    message="Invalid token algorithm",
-                    code="invalid_algorithm",
-                    request_id=request_id,
-                ).model_dump(),
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-
-        if payload.get("typ") != "Bearer":
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=AuthError(
-                    error="Unauthorized",
-                    message="Invalid token type",
-                    code="invalid_token_type",
-                    request_id=request_id,
-                ).model_dump(),
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-
+        # Extract and filter user information
         filtered_payload = {
             "sub": payload.get("sub"),
             "email": payload.get("email"),
@@ -118,7 +75,7 @@ async def validate_token(token: str, request_id: Optional[str] = None) -> dict:
         return filtered_payload
     except HTTPException:
         raise
-    except JWTError as exc:
+    except Exception as exc:
         logger.error(f"Token validation error: {exc}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
