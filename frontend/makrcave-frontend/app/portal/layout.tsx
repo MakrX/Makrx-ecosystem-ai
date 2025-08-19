@@ -1,6 +1,6 @@
 'use client';
 
-import Layout from '../../components/Layout';
+import NextLayout from '../../components/NextLayout';
 import ProtectedRoute from '../../components/ProtectedRoute';
 
 export default function PortalLayout({
@@ -10,7 +10,7 @@ export default function PortalLayout({
 }) {
   return (
     <ProtectedRoute>
-      <Layout children={children} />
+      <NextLayout>{children}</NextLayout>
     </ProtectedRoute>
   );
 }
