@@ -4,55 +4,419 @@
   "registrationAllowed": false,
   "verifyEmail": true,
   "bruteForceProtected": true,
-  "failureFactor": 5,
+  "failureFactor": 3,
+  "maxFailureWaitSeconds": 900,
+  "maxDeltaTimeSeconds": 43200,
   "permanentLockout": false,
+  "quickLoginCheckMilliSeconds": 1000,
+  "waitIncrementSeconds": 60,
   "sslRequired": "external",
-  "passwordPolicy": "length(12) and lowerCase(1) and upperCase(1) and digits(1) and specialChars(1) and passwordHistory(5)",
-  "accessTokenLifespan": 600,
-  "accessTokenLifespanForImplicitFlow": 600,
-  "refreshTokenLifespan": 2700,
-  "refreshTokenLifespanRememberMe": 2592000,
-  "ssoSessionIdleTimeout": 2700,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "userManagedAccessAllowed": false,
+  "passwordPolicy": "length(14) and lowerCase(1) and upperCase(1) and digits(1) and specialChars(2) and passwordHistory(12) and notUsername and notEmail",
+  "accessTokenLifespan": 900,
+  "accessTokenLifespanForImplicitFlow": 300,
+  "refreshTokenLifespan": 1800,
+  "refreshTokenLifespanRememberMe": 86400,
+  "ssoSessionIdleTimeout": 1800,
   "ssoSessionMaxLifespan": 28800,
-  "ssoSessionIdleTimeoutRememberMe": 2592000,
-  "ssoSessionMaxLifespanRememberMe": 2592000,
+  "ssoSessionIdleTimeoutRememberMe": 86400,
+  "ssoSessionMaxLifespanRememberMe": 604800,
   "offlineSessionIdleTimeout": 2592000,
   "offlineSessionMaxLifespan": 0,
+  "attributes": {
+    "bruteForceProtected": "true",
+    "permanentLockout": "false",
+    "maxFailureWaitSeconds": "900",
+    "failureFactor": "3",
+    "waitIncrementSeconds": "60",
+    "quickLoginCheckMilliSeconds": "1000",
+    "maxDeltaTimeSeconds": "43200",
+    "frontendUrl": "https://auth.makrx.org",
+    "acr.loa.map": "{\"essential\":{\"bronze\":{\"name\":\"bronze\",\"loa\":1},\"silver\":{\"name\":\"silver\",\"loa\":2},\"gold\":{\"name\":\"gold\",\"loa\":3}}}"
+  },
   "roles": {
     "realm": [
       {
-        "name": "super_admin",
-        "description": "full, cross-tenant control.",
+        "name": "super-admin",
+        "description": "Full cross-tenant administrative control with audit logging",
         "composite": true,
         "composites": {
-          "realm": [
-            "offline_access"
-          ]
+          "realm": ["offline_access", "uma_authorization"]
+        }
+      },
+      {
+        "name": "makerspace-admin",
+        "description": "Manages a single makerspace with comprehensive permissions",
+        "composite": true,
+        "composites": {
+          "realm": ["offline_access"]
         }
       },
       {
         "name": "admin",
-        "description": "organization/tenant admin (not global).",
+        "description": "Organization/tenant admin (not global) with limited cross-tenant access",
         "composite": true,
         "composites": {
-          "realm": [
-            "offline_access"
-          ]
+          "realm": ["offline_access"]
         }
       },
       {
-        "name": "makerspace_admin",
-        "description": "manages a single makerspace."
-      },
-      {
-        "name": "service_provider",
-        "description": "manages own jobs/materials; no makerspace governance."
-      },
-      {
         "name": "user",
-        "description": "end-user privileges."
+        "description": "Standard user with read-only access to most features"
+      },
+      {
+        "name": "service-provider",
+        "description": "Manages own jobs/materials; no makerspace governance"
       }
     ]
-  }
+  },
+  "clients": [
+    {
+      "clientId": "makrcave-backend",
+      "name": "MakrCave Backend Service",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "**GENERATED_SECRET**",
+      "bearerOnly": true,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "protocol": "openid-connect",
+      "attributes": {
+        "saml.assertion.signature": "false",
+        "saml.force.post.binding": "false",
+        "saml.multivalued.roles": "false",
+        "saml.encrypt": "false",
+        "saml.server.signature": "false",
+        "saml.server.signature.keyinfo.ext": "false",
+        "exclude.session.state.from.auth.response": "false",
+        "saml_force_name_id_format": "false",
+        "saml.client.signature": "false",
+        "tls.client.certificate.bound.access.tokens": "false",
+        "saml.authnstatement": "false",
+        "display.on.consent.screen": "false",
+        "saml.onetimeuse.condition": "false",
+        "access.token.lifespan": "900",
+        "client.secret.creation.time": "1640995200"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": false,
+      "nodeReRegistrationTimeout": -1,
+      "defaultClientScopes": [
+        "web-origins",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
+      "clientId": "makrx-store-backend",
+      "name": "MakrX Store Backend Service",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "**GENERATED_SECRET**",
+      "bearerOnly": true,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "protocol": "openid-connect",
+      "attributes": {
+        "access.token.lifespan": "900",
+        "tls.client.certificate.bound.access.tokens": "false",
+        "client.secret.creation.time": "1640995200"
+      },
+      "fullScopeAllowed": false,
+      "defaultClientScopes": [
+        "web-origins",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
+      "clientId": "makrx-gateway-frontend",
+      "name": "MakrX Gateway Frontend",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "**GENERATED_SECRET**",
+      "redirectUris": [
+        "https://makrx.org/*",
+        "https://www.makrx.org/*"
+      ],
+      "webOrigins": [
+        "https://makrx.org",
+        "https://www.makrx.org"
+      ],
+      "bearerOnly": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": false,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "access.token.lifespan": "900",
+        "post.logout.redirect.uris": "https://makrx.org/logout",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "backchannel.logout.revoke.offline.tokens": "false",
+        "use.jwks.url": "true",
+        "oidc.ciba.grant.enabled": "false",
+        "backchannel.logout.session.required": "true",
+        "client_credentials.use_refresh_token": "false",
+        "require.pushed.authorization.requests": "false",
+        "tls.client.certificate.bound.access.tokens": "false",
+        "display.on.consent.screen": "false",
+        "client.secret.creation.time": "1640995200"
+      },
+      "fullScopeAllowed": false,
+      "defaultClientScopes": [
+        "web-origins",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access"
+      ]
+    },
+    {
+      "clientId": "makrcave-frontend",
+      "name": "MakrCave Frontend",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "**GENERATED_SECRET**",
+      "redirectUris": [
+        "https://makrcave.com/*",
+        "https://app.makrcave.com/*"
+      ],
+      "webOrigins": [
+        "https://makrcave.com",
+        "https://app.makrcave.com"
+      ],
+      "bearerOnly": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": false,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "access.token.lifespan": "900",
+        "post.logout.redirect.uris": "https://makrcave.com/logout"
+      },
+      "fullScopeAllowed": false
+    },
+    {
+      "clientId": "makrx-store-frontend",
+      "name": "MakrX Store Frontend",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "**GENERATED_SECRET**",
+      "redirectUris": [
+        "https://store.makrx.org/*",
+        "https://makrx.store/*"
+      ],
+      "webOrigins": [
+        "https://store.makrx.org",
+        "https://makrx.store"
+      ],
+      "bearerOnly": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": false,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "access.token.lifespan": "900",
+        "post.logout.redirect.uris": "https://makrx.store/logout"
+      },
+      "fullScopeAllowed": false
+    }
+  ],
+  "clientScopes": [
+    {
+      "name": "makerspace",
+      "description": "Makerspace-specific access scope",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true",
+        "consent.screen.text": "Access to makerspace resources"
+      }
+    },
+    {
+      "name": "provider",
+      "description": "Service provider access scope",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true",
+        "consent.screen.text": "Access to service provider resources"
+      }
+    }
+  ],
+  "authenticationFlows": [
+    {
+      "alias": "makrx-browser-flow",
+      "description": "Secure browser flow with MFA requirements",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticator": "auth-cookie",
+          "requirement": "ALTERNATIVE",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "configAlias": "null"
+        },
+        {
+          "authenticator": "auth-spnego",
+          "requirement": "DISABLED",
+          "priority": 20,
+          "userSetupAllowed": false,
+          "configAlias": "null"
+        },
+        {
+          "authenticator": "identity-provider-redirector",
+          "requirement": "ALTERNATIVE",
+          "priority": 25,
+          "userSetupAllowed": false,
+          "configAlias": "null"
+        },
+        {
+          "flowAlias": "makrx-browser-forms",
+          "requirement": "ALTERNATIVE",
+          "priority": 30,
+          "userSetupAllowed": false,
+          "configAlias": "null"
+        }
+      ]
+    }
+  ],
+  "browserSecurityHeaders": {
+    "contentSecurityPolicyReportOnly": "",
+    "xContentTypeOptions": "nosniff",
+    "xRobotsTag": "none",
+    "xFrameOptions": "SAMEORIGIN",
+    "contentSecurityPolicy": "frame-src 'self'; frame-ancestors 'self'; object-src 'none';",
+    "xXSSProtection": "1; mode=block",
+    "strictTransportSecurity": "max-age=31536000; includeSubDomains"
+  },
+  "smtpServer": {
+    "password": "**GENERATED_SECRET**",
+    "starttls": "true",
+    "auth": "true",
+    "port": "587",
+    "host": "smtp.makrx.org",
+    "replyToDisplayName": "MakrX Support",
+    "replyTo": "noreply@makrx.org",
+    "from": "noreply@makrx.org",
+    "fromDisplayName": "MakrX Authentication",
+    "envelopeFrom": "",
+    "ssl": "false",
+    "user": "noreply@makrx.org"
+  },
+  "eventsEnabled": true,
+  "eventsListeners": ["jboss-logging"],
+  "enabledEventTypes": [
+    "SEND_RESET_PASSWORD",
+    "UPDATE_CONSENT_ERROR",
+    "GRANT_CONSENT",
+    "UPDATE_TOTP",
+    "REMOVE_TOTP",
+    "REVOKE_GRANT",
+    "LOGIN_ERROR",
+    "CLIENT_LOGIN",
+    "RESET_PASSWORD_ERROR",
+    "IMPERSONATE_ERROR",
+    "CODE_TO_TOKEN_ERROR",
+    "CUSTOM_REQUIRED_ACTION",
+    "RESTART_AUTHENTICATION",
+    "IMPERSONATE",
+    "UPDATE_PROFILE_ERROR",
+    "LOGIN",
+    "UPDATE_PASSWORD_ERROR",
+    "CLIENT_INITIATED_ACCOUNT_LINKING",
+    "TOKEN_EXCHANGE",
+    "LOGOUT",
+    "REGISTER",
+    "DELETE_ACCOUNT_ERROR",
+    "CLIENT_REGISTER",
+    "IDENTITY_PROVIDER_LINK_ACCOUNT",
+    "DELETE_ACCOUNT",
+    "CLIENT_DELETE",
+    "IDENTITY_PROVIDER_FIRST_LOGIN",
+    "VERIFY_EMAIL",
+    "CLIENT_DELETE_ERROR",
+    "CLIENT_LOGIN_ERROR",
+    "RESTART_AUTHENTICATION_ERROR",
+    "EXECUTE_ACTIONS",
+    "REMOVE_FEDERATED_IDENTITY_ERROR",
+    "TOKEN_EXCHANGE_ERROR",
+    "PERMISSION_TOKEN",
+    "SEND_IDENTITY_PROVIDER_LINK_ERROR",
+    "EXECUTE_ACTION_TOKEN_ERROR",
+    "SEND_VERIFY_EMAIL",
+    "EXECUTE_ACTIONS_ERROR",
+    "REMOVE_FEDERATED_IDENTITY",
+    "IDENTITY_PROVIDER_POST_LOGIN",
+    "IDENTITY_PROVIDER_LINK_ACCOUNT_ERROR",
+    "UPDATE_EMAIL",
+    "REGISTER_ERROR",
+    "REVOKE_GRANT_ERROR",
+    "LOGOUT_ERROR",
+    "UPDATE_EMAIL_ERROR",
+    "CLIENT_UPDATE_ERROR",
+    "UPDATE_PROFILE",
+    "CLIENT_REGISTER_ERROR",
+    "UPDATE_PASSWORD",
+    "UPDATE_TOTP_ERROR",
+    "VERIFY_EMAIL_ERROR",
+    "SEND_IDENTITY_PROVIDER_LINK",
+    "CLIENT_UPDATE",
+    "CUSTOM_REQUIRED_ACTION_ERROR",
+    "IDENTITY_PROVIDER_POST_LOGIN_ERROR",
+    "UPDATE_CONSENT",
+    "REMOVE_TOTP_ERROR",
+    "SEND_RESET_PASSWORD_ERROR",
+    "SEND_VERIFY_EMAIL_ERROR",
+    "RESET_PASSWORD"
+  ],
+  "adminEventsEnabled": true,
+  "adminEventsDetailsEnabled": true,
+  "internationalizationEnabled": true,
+  "supportedLocales": ["en", "hi"],
+  "defaultLocale": "en"
 }
-
