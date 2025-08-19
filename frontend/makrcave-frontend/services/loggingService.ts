@@ -73,8 +73,8 @@ class LoggingService {
   }
 
   private loadPersistedLogs(): void {
-    if (!this.config.persistLogs) return;
-    
+    if (!this.config.persistLogs || typeof window === 'undefined') return;
+
     try {
       const stored = localStorage.getItem('makrcave_logs');
       if (stored) {
