@@ -59,12 +59,18 @@ async def validate_token(token: str, request_id: Optional[str] = None) -> dict:
             token,
             key,
             algorithms=[alg],
+            audience=KEYCLOAK_AUDIENCE,
+            issuer=KEYCLOAK_ISSUER,
             options={
-                "verify_aud": False,
-                "verify_iss": False,
-                "verify_iat": False,
-                "verify_nbf": False,
-                "verify_exp": False,
+                "verify_aud": True,
+                "verify_iss": True,
+                "verify_iat": True,
+                "verify_nbf": True,
+                "verify_exp": True,
+                "verify_signature": True,
+                "require_exp": True,
+                "require_iat": True,
+                "require_nbf": False,
             },
         )
 
