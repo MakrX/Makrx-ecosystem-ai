@@ -1,6 +1,8 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+
+export const dynamic = 'force-dynamic';
 import { Metadata } from 'next';
 
 const Contact = dynamic(() => import('../../components/page-components/Contact'), {
