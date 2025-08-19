@@ -1,9 +1,11 @@
-import { Store } from '../../components/page-components/PlaceholderPage';
+'use client';
 
-export const metadata = {
-  title: 'Store',
-  description: 'Shop for tools, components, and materials at MakrX.Store.',
-};
+import dynamic from 'next/dynamic';
+
+const Store = dynamic(() => import('../../components/page-components/PlaceholderPage').then(mod => ({ default: mod.Store })), {
+  ssr: false,
+  loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
+});
 
 export default function StorePage() {
   return <Store />;
