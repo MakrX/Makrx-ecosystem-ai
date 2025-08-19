@@ -34,7 +34,6 @@ export default function AddEquipmentModal({
   onSave,
   initialData
 }: AddEquipmentModalProps) {
-  const { } = useAuth();
   const [formData, setFormData] = useState<Equipment>({
     equipment_id: '',
     name: '',
