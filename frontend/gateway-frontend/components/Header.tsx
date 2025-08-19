@@ -58,7 +58,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3">
             <div className="w-8 h-8 bg-makrx-blue rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">M</span>
             </div>
