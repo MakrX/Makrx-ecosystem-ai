@@ -201,7 +201,7 @@ class SecureJWTValidator:
                 error_details={"unexpected_error": str(e), "error_type": type(e).__name__}
             )
     
-    async def _validate_token_security(self, payload: Dict[str, Any], request_id: Optional[str]) -> None:
+    async def _validate_token_security(self, payload: Dict[str, Any], request: Request) -> None:
         """Additional security validations beyond standard JWT checks"""
         
         # Validate token type
