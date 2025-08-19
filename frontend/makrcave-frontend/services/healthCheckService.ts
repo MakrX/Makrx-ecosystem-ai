@@ -666,6 +666,7 @@ class HealthCheckService {
 
   // Get current environment
   private getEnvironment(): string {
+    if (typeof window === 'undefined') return 'development';
     if (window.location.hostname.includes('localhost')) return 'development';
     if (window.location.hostname.includes('staging')) return 'staging';
     if (window.location.hostname.includes('fly.dev') || window.location.hostname.includes('builder.codes')) return 'cloud';
