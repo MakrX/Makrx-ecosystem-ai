@@ -6,6 +6,7 @@ import os
 
 # Import security middleware
 from middleware.security import add_security_middleware
+from middleware.error_handling import ErrorHandlingMiddleware
 
 from routes import api_router
 
