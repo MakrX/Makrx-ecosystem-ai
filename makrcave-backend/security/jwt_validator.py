@@ -78,16 +78,29 @@ class SecureJWTValidator:
             HTTPException: If token validation fails
         """
         try:
+            # Check if IP is blocked due to previous security violations
+            check_ip_blocked(request)
+
             # Parse token header without verification to check algorithm
-            header = jwt.get_unverified_header(token)
+            try:
+                header = jwt.get_unverified_header(token)
+            except Exception:
+                raise create_jwt_error_response(
+                    JWTErrorType.MALFORMED_TOKEN,
+                    request,
+                    error_details={"reason": "Invalid token header"}
+                )
+
             algorithm = header.get("alg")
-            
+            token_id = header.get("jti")  # Token ID for tracking
+
             # Validate algorithm
             if algorithm not in JWTSecurityConfig.ALLOWED_ALGORITHMS:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail=self._create_error("Invalid token algorithm", "invalid_algorithm", request_id),
-                    headers={"WWW-Authenticate": "Bearer"},
+                raise create_jwt_error_response(
+                    JWTErrorType.INVALID_ALGORITHM,
+                    request,
+                    token_jti=token_id,
+                    error_details={"algorithm": algorithm, "allowed": JWTSecurityConfig.ALLOWED_ALGORITHMS}
                 )
             
             # Prepare audience list
