@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { X, Save } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
 
 interface Equipment {
   id?: string;
