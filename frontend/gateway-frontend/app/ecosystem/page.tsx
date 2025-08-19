@@ -1,4 +1,4 @@
-import Ecosystem from '../../pages/Ecosystem';
+import Ecosystem from '../../components/pages/Ecosystem';
 
 export const metadata = {
   title: 'Ecosystem',

@@ -1,4 +1,4 @@
-import Docs from '../../pages/Docs';
+import Docs from '../../components/pages/Docs';
 
 export const metadata = {
   title: 'Documentation',
