@@ -1,4 +1,4 @@
-import About from '../../pages/About';
+import About from '../../components/pages/About';
 
 export const metadata = {
   title: 'About Us',
