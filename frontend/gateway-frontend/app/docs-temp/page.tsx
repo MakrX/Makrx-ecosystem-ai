@@ -10,5 +10,5 @@ const Docs = dynamicImport(() => import('../../components/page-components/Placeh
 });
 
 export default function DocsPage() {
-  return <Docs />;
+  return <Docs title="Documentation" description="Comprehensive guides and API documentation for the MakrX ecosystem." />;
 }
