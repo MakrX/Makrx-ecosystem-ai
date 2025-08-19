@@ -207,17 +207,18 @@ const notifyAuthListeners = (user: User | null): void => {
 if (isClient) {
   init();
   setInterval(async () => {
-    if (keycloak.authenticated) {
+    const kc = getKeycloak();
+    if (kc && kc.authenticated) {
       try {
-        const refreshed = await keycloak.updateToken(60);
+        const refreshed = await kc.updateToken(60);
         if (refreshed) {
-          if (keycloak.token) {
-            localStorage.setItem('auth_token', keycloak.token);
+          if (kc.token) {
+            localStorage.setItem('auth_token', kc.token);
           }
           notifyAuthListeners(getCurrentUser());
         }
       } catch {
-        keycloak.clearToken();
+        kc.clearToken();
         notifyAuthListeners(null);
       }
     }
