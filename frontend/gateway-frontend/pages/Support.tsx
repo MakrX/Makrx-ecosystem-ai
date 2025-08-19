@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { 
   HelpCircle, Search, MessageCircle, Mail, Phone,
   ChevronDown, ChevronRight, ExternalLink, Send,
