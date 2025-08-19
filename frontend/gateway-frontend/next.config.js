@@ -1,9 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Force app router
-  experimental: {
-    appDir: true,
-  },
   // Optimize images
   images: {
     domains: ['cdn.builder.io'],
