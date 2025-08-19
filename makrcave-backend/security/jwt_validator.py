@@ -129,44 +129,67 @@ class SecureJWTValidator:
             
         except JWTError as e:
             error_type = type(e).__name__
-            logger.warning(f"JWT validation failed: {error_type} - {str(e)} (request: {request_id})")
-            
-            # Map specific JWT errors to appropriate HTTP responses
+            request_id = getattr(request.state, "request_id", "unknown")
+
+            # Extract user ID and token ID if available from payload
+            user_id = None
+            token_id = None
+            try:
+                # Try to get some info from unverified payload for logging
+                unverified_payload = jwt.get_unverified_claims(token)
+                user_id = unverified_payload.get("sub")
+                token_id = unverified_payload.get("jti")
+            except:
+                pass  # Ignore errors in unverified payload extraction
+
+            # Map specific JWT errors to appropriate security error types
             if "ExpiredSignature" in error_type:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail=self._create_error("Token has expired", "token_expired", request_id),
-                    headers={"WWW-Authenticate": "Bearer"},
+                raise create_jwt_error_response(
+                    JWTErrorType.EXPIRED_TOKEN,
+                    request,
+                    user_id=user_id,
+                    token_jti=token_id,
+                    error_details={"jwt_error": error_type, "message": str(e)}
                 )
             elif "InvalidAudience" in error_type:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail=self._create_error("Invalid token audience", "invalid_audience", request_id),
-                    headers={"WWW-Authenticate": "Bearer"},
+                raise create_jwt_error_response(
+                    JWTErrorType.INVALID_AUDIENCE,
+                    request,
+                    user_id=user_id,
+                    token_jti=token_id,
+                    error_details={"jwt_error": error_type, "message": str(e)}
                 )
             elif "InvalidIssuer" in error_type:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail=self._create_error("Invalid token issuer", "invalid_issuer", request_id),
-                    headers={"WWW-Authenticate": "Bearer"},
+                raise create_jwt_error_response(
+                    JWTErrorType.INVALID_ISSUER,
+                    request,
+                    user_id=user_id,
+                    token_jti=token_id,
+                    error_details={"jwt_error": error_type, "message": str(e)}
                 )
             elif "InvalidSignature" in error_type:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail=self._create_error("Invalid token signature", "invalid_signature", request_id),
-                    headers={"WWW-Authenticate": "Bearer"},
+                raise create_jwt_error_response(
+                    JWTErrorType.INVALID_SIGNATURE,
+                    request,
+                    user_id=user_id,
+                    token_jti=token_id,
+                    error_details={"jwt_error": error_type, "message": str(e)}
                 )
             elif "InvalidKey" in error_type:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail=self._create_error("Invalid signing key", "invalid_key", request_id),
-                    headers={"WWW-Authenticate": "Bearer"},
+                raise create_jwt_error_response(
+                    JWTErrorType.KEY_NOT_FOUND,
+                    request,
+                    user_id=user_id,
+                    token_jti=token_id,
+                    error_details={"jwt_error": error_type, "message": str(e)}
                 )
             else:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail=self._create_error("Token validation failed", "token_invalid", request_id),
-                    headers={"WWW-Authenticate": "Bearer"},
+                raise create_jwt_error_response(
+                    JWTErrorType.MALFORMED_TOKEN,
+                    request,
+                    user_id=user_id,
+                    token_jti=token_id,
+                    error_details={"jwt_error": error_type, "message": str(e)}
                 )
         
         except Exception as e:
