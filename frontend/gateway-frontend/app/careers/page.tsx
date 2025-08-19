@@ -1,9 +1,11 @@
-import { Careers } from '../../components/page-components/PlaceholderPage';
+'use client';
 
-export const metadata = {
-  title: 'Careers',
-  description: 'Join the MakrX team and help shape the future of digital manufacturing.',
-};
+import dynamic from 'next/dynamic';
+
+const Careers = dynamic(() => import('../../components/page-components/PlaceholderPage').then(mod => ({ default: mod.Careers })), {
+  ssr: false,
+  loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
+});
 
 export default function CareersPage() {
   return <Careers />;
