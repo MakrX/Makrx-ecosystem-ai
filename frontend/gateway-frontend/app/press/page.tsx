@@ -1,9 +1,11 @@
-import { Press } from '../../components/page-components/PlaceholderPage';
+'use client';
 
-export const metadata = {
-  title: 'Press',
-  description: 'Press releases, media coverage, and news about MakrX.',
-};
+import dynamic from 'next/dynamic';
+
+const Press = dynamic(() => import('../../components/page-components/PlaceholderPage').then(mod => ({ default: mod.Press })), {
+  ssr: false,
+  loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
+});
 
 export default function PressPage() {
   return <Press />;
