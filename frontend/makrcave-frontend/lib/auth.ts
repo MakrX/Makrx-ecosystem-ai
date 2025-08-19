@@ -8,10 +8,10 @@ import { logoutFromSSO, redirectToSSO } from "./sso-utils";
 
 // Configuration
 const KEYCLOAK_URL =
-  import.meta.env.VITE_KEYCLOAK_URL || "https://auth.makrx.org";
-const REALM = import.meta.env.VITE_KEYCLOAK_REALM || "makrx";
+  process.env.NEXT_PUBLIC_KEYCLOAK_URL || "https://auth.makrx.org";
+const REALM = process.env.NEXT_PUBLIC_KEYCLOAK_REALM || "makrx";
 const CLIENT_ID =
-  import.meta.env.VITE_KEYCLOAK_CLIENT_ID || "makrx-cave";
+  process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID || "makrx-cave";
 
 // Types
 export interface User {
