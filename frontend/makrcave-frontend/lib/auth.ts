@@ -48,7 +48,8 @@ const isClient = typeof window !== "undefined";
 export const init = async (): Promise<boolean> => {
   if (!isClient) return false;
   if (!initPromise) {
-    initPromise = keycloak
+    const kc = getKeycloak();
+    initPromise = kc
       .init({
         onLoad: "check-sso",
         pkceMethod: "S256",
@@ -57,8 +58,8 @@ export const init = async (): Promise<boolean> => {
       })
       .then((authenticated) => {
         if (authenticated) {
-          if (keycloak.token) {
-            localStorage.setItem('auth_token', keycloak.token);
+          if (kc.token) {
+            localStorage.setItem('auth_token', kc.token);
           }
           notifyAuthListeners(getCurrentUser());
         }
@@ -66,11 +67,11 @@ export const init = async (): Promise<boolean> => {
       });
 
     // Automatic token refresh
-    keycloak.onTokenExpired = async () => {
+    kc.onTokenExpired = async () => {
       try {
-        await keycloak.updateToken(60);
-        if (keycloak.token) {
-          localStorage.setItem('auth_token', keycloak.token);
+        await kc.updateToken(60);
+        if (kc.token) {
+          localStorage.setItem('auth_token', kc.token);
         }
         notifyAuthListeners(getCurrentUser());
       } catch {
