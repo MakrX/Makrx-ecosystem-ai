@@ -1,4 +1,4 @@
-import TermsOfService from '../../../pages/TermsOfService';
+import TermsOfService from '../../../components/pages/TermsOfService';
 
 export const metadata = {
   title: 'Terms of Service',

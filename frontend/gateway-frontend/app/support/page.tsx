@@ -1,4 +1,4 @@
-import Support from '../../pages/Support';
+import Support from '../../components/pages/Support';
 
 export const metadata = {
   title: 'Support',

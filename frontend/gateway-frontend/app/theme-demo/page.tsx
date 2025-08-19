@@ -1,4 +1,4 @@
-import ThemeDemo from '../../pages/ThemeDemo';
+import ThemeDemo from '../../components/pages/ThemeDemo';
 
 export const metadata = {
   title: 'Theme Demo',
