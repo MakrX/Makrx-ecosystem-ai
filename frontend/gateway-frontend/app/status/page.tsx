@@ -1,9 +1,11 @@
-import { Status } from '../../components/page-components/PlaceholderPage';
+'use client';
 
-export const metadata = {
-  title: 'Status',
-  description: 'Check the current status and uptime of all MakrX services.',
-};
+import dynamic from 'next/dynamic';
+
+const Status = dynamic(() => import('../../components/page-components/PlaceholderPage').then(mod => ({ default: mod.Status })), {
+  ssr: false,
+  loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
+});
 
 export default function StatusPage() {
   return <Status />;
