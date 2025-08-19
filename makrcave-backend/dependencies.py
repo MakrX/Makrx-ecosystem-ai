@@ -30,6 +30,9 @@ ALLOWED_ALGS = {"RS256"}
 
 security = HTTPBearer()
 
+# Initialize standardized JWT validator
+jwt_validator = SecureJWTValidator(KEYCLOAK_URL, KEYCLOAK_REALM, KEYCLOAK_AUDIENCE)
+
 
 class CurrentUser:
     def __init__(
