@@ -420,7 +420,7 @@ class LoggingService {
 
   clearLogs(): void {
     this.logs = [];
-    if (this.config.persistLogs) {
+    if (this.config.persistLogs && typeof window !== 'undefined') {
       localStorage.removeItem('makrcave_logs');
     }
   }
