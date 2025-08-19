@@ -59,7 +59,7 @@ async def validate_token(token: str, request_id: Optional[str] = None) -> dict:
         key = await jwks.get_jwk(kid, JWKS_URL)
 
         # Use standardized validator for comprehensive security checks
-        payload = await jwt_validator.validate_token(token, key, request_id)
+        payload = await jwt_validator.validate_token(token, key, request)
 
         # Extract and filter user information
         filtered_payload = {
