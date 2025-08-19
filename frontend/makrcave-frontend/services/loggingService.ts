@@ -64,9 +64,11 @@ class LoggingService {
 
   private initializeRemoteLogging(): void {
     // Check for cloud environment and set remote logging endpoint
-    const isCloudEnvironment = window.location.hostname !== 'localhost';
-    if (isCloudEnvironment && this.config.enableRemoteLogging) {
-      this.remoteEndpoint = '/api/logging/submit';
+    if (typeof window !== 'undefined') {
+      const isCloudEnvironment = window.location.hostname !== 'localhost';
+      if (isCloudEnvironment && this.config.enableRemoteLogging) {
+        this.remoteEndpoint = '/api/logging/submit';
+      }
     }
   }
 
