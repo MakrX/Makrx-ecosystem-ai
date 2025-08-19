@@ -1,4 +1,4 @@
-import Makerspaces from '../../components/pages/Makerspaces';
+import { Makerspaces } from '../../components/page-components/PlaceholderPage';
 
 export const metadata = {
   title: 'Makerspaces',

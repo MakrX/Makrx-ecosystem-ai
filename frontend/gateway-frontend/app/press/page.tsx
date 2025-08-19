@@ -1,4 +1,4 @@
-import Press from '../../components/pages/Press';
+import { Press } from '../../components/page-components/PlaceholderPage';
 
 export const metadata = {
   title: 'Press',

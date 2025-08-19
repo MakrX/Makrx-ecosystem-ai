@@ -1,4 +1,4 @@
-import Events from '../../components/pages/Events';
+import { Events } from '../../components/page-components/PlaceholderPage';
 
 export const metadata = {
   title: 'Events',

@@ -1,4 +1,4 @@
-import ThreeDStore from '../../components/pages/ThreeDStore';
+import { ThreeDStore } from '../../components/page-components/PlaceholderPage';
 
 export const metadata = {
   title: '3D Printing Services',
