@@ -1,11 +1,10 @@
 'use client';
 
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 
 export const dynamic = 'force-dynamic';
-import { Metadata } from 'next';
 
-const Contact = dynamic(() => import('../../components/page-components/Contact'), {
+const Contact = dynamicImport(() => import('../../components/page-components/Contact'), {
   ssr: false,
   loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
 });
