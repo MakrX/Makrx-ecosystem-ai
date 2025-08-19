@@ -1,4 +1,4 @@
-import Press from '../../pages/Press';
+import Press from '../../components/pages/Press';
 
 export const metadata = {
   title: 'Press',

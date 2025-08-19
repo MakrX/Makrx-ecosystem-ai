@@ -1,4 +1,4 @@
-import Store from '../../pages/Store';
+import Store from '../../components/pages/Store';
 
 export const metadata = {
   title: 'Store',

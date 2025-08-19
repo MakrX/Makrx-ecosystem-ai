@@ -1,4 +1,4 @@
-import Status from '../../pages/Status';
+import Status from '../../components/pages/Status';
 
 export const metadata = {
   title: 'Status',
