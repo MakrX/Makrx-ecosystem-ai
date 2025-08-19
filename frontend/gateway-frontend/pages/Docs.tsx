@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { 
   BookOpen, Code, Wrench, Users, ArrowRight,
   Search, ExternalLink, Download, Star, 
