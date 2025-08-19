@@ -1,9 +1,11 @@
-import { ThreeDStore } from '../../components/page-components/PlaceholderPage';
+'use client';
 
-export const metadata = {
-  title: '3D Printing Services',
-  description: 'Custom 3D printing and fabrication services at 3D.MakrX.Store.',
-};
+import dynamic from 'next/dynamic';
+
+const ThreeDStore = dynamic(() => import('../../components/page-components/PlaceholderPage').then(mod => ({ default: mod.ThreeDStore })), {
+  ssr: false,
+  loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
+});
 
 export default function ThreeDStorePage() {
   return <ThreeDStore />;
