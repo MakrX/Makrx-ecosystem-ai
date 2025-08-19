@@ -1,4 +1,4 @@
-import PrivacyPolicy from '../../../components/pages/PrivacyPolicy';
+import { PrivacyPolicy } from '../../../components/page-components/PlaceholderPage';
 
 export const metadata = {
   title: 'Privacy Policy',

@@ -1,4 +1,4 @@
-import NotFound from '../components/pages/NotFound';
+import { NotFound } from '../components/page-components/PlaceholderPage';
 
 export const metadata = {
   title: '404 - Page Not Found',
