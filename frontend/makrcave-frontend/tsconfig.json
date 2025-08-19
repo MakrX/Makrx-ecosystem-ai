@@ -2,7 +2,11 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "paths": {
-      "@/*": ["frontend/makrcave-frontend/*"]
+      "@/*": ["frontend/makrcave-frontend/*"],
+      "@makrx/ui": ["../../packages/ui"],
+      "@makrx/types": ["../../packages/types"],
+      "@makrx/utils": ["../../packages/utils"],
+      "@makrx/feature-flags": ["../../packages/feature-flags/src"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],
