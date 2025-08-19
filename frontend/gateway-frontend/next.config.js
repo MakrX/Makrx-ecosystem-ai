@@ -1,9 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    // Enable app directory
-    appDir: true,
-  },
   // Optimize images
   images: {
     domains: ['cdn.builder.io'],
@@ -22,8 +18,6 @@ const nextConfig = {
   generateEtags: true,
   // Power off in case of development
   poweredByHeader: false,
-  // Performance optimizations
-  swcMinify: true,
   // Bundle analyzer in development
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     // Custom webpack config if needed
@@ -85,13 +79,8 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: false,
   },
-  // Experimental features
-  experimental: {
-    // Enable modern builds
-    esmExternals: true,
-    // Server components
-    serverComponentsExternalPackages: [],
-  },
+  // Server external packages
+  serverExternalPackages: [],
 };
 
 module.exports = nextConfig;
