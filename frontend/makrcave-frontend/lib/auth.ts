@@ -4,7 +4,7 @@
  */
 
 import Keycloak, { KeycloakInstance, KeycloakLoginOptions } from "keycloak-js";
-import { logoutFromSSO, redirectToSSO } from "../../makrx-sso-utils.js";
+import { logoutFromSSO, redirectToSSO } from "./sso-utils";
 
 // Configuration
 const KEYCLOAK_URL =
@@ -222,4 +222,3 @@ export const auth = {
 };
 
 export default auth;
-
