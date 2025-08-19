@@ -1,16 +1,12 @@
+'use client';
+
+import dynamic from 'next/dynamic';
+
+const HomePage = dynamic(() => import('../components/page-components/HomePage'), {
+  ssr: false,
+  loading: () => <div className="min-h-screen py-20 flex items-center justify-center">Loading...</div>
+});
+
 export default function Home() {
-  return (
-    <div className="min-h-screen py-20">
-      <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-8">
-            MakrX Gateway
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
-            Digital Manufacturing Ecosystem
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+  return <HomePage />;
 }
