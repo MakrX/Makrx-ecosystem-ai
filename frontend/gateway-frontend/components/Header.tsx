@@ -11,7 +11,7 @@ export default function Header() {
   const [showLauncher, setShowLauncher] = useState(false);
   const pathname = usePathname();
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => pathname === path;
 
   const navigation = [
     { name: "Ecosystem", href: "/ecosystem" },
