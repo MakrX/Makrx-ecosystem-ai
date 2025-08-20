@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import Script from 'next/script';
 
 interface SEOStructuredDataProps {
   type: 'organization' | 'website' | 'article' | 'product';
@@ -82,6 +82,32 @@ export default function SEOStructuredData({ type, data }: SEOStructuredDataProps
           }
         };
 
+      case 'article':
+        return {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": data?.title || "MakrX - Maker Ecosystem Article",
+          "description": data?.description || "Learn about maker culture and innovation",
+          "author": {
+            "@type": "Organization",
+            "name": "MakrX"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "MakrX",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://makrx.org/logo.png"
+            }
+          },
+          "datePublished": data?.datePublished || new Date().toISOString(),
+          "dateModified": data?.dateModified || new Date().toISOString(),
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": data?.url || "https://makrx.org"
+          }
+        };
+
       default:
         return null;
     }
@@ -92,10 +118,12 @@ export default function SEOStructuredData({ type, data }: SEOStructuredDataProps
   if (!structuredData) return null;
 
   return (
-    <Helmet>
-      <script type="application/ld+json">
-        {JSON.stringify(structuredData)}
-      </script>
-    </Helmet>
+    <Script
+      id={`structured-data-${type}`}
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(structuredData)
+      }}
+    />
   );
 }
