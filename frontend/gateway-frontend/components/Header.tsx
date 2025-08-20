@@ -170,7 +170,7 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200 dark:border-slate-800">
+          <div className="md:hidden py-4 border-t border-gray-200 dark:border-slate-700">
             <nav className="space-y-4">
               {navigation.map((item) => (
                 <Link
