@@ -50,7 +50,16 @@ export default function PlaceholderPage({ title, description, comingSoon = true 
   );
 }
 
-// Specific page components
+// Import comprehensive components
+import About from './About';
+import Contact from './Contact';
+import Store from './Store';
+import Makerspaces from './Makerspaces';
+
+// Export the comprehensive components
+export { About, Contact, Store, Makerspaces };
+
+// Specific page components - keeping placeholders for components not yet implemented
 export function Blog() {
   return (
     <PlaceholderPage
@@ -96,15 +105,6 @@ export function Events() {
   );
 }
 
-export function Makerspaces() {
-  return (
-    <PlaceholderPage
-      title="MakrCave Makerspaces"
-      description="Find and access professional makerspaces with 3D printers, laser cutters, and more."
-    />
-  );
-}
-
 export function Press() {
   return (
     <PlaceholderPage
@@ -129,15 +129,6 @@ export function Status() {
       title="System Status"
       description="Real-time status and uptime information for all MakrX services."
       comingSoon={false}
-    />
-  );
-}
-
-export function Store() {
-  return (
-    <PlaceholderPage
-      title="MakrX.Store"
-      description="Shop for electronics, components, tools, and materials from trusted suppliers."
     />
   );
 }
