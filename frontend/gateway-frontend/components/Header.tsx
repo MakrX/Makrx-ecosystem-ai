@@ -109,7 +109,7 @@ export default function Header() {
                         href={app.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-3 rounded-lg border border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 hover:shadow-sm dark:hover:bg-slate-900 transition-all group"
+                        className="p-3 rounded-lg border border-gray-200 dark:border-slate-600 hover:border-gray-300 dark:hover:border-slate-500 hover:shadow-sm dark:hover:bg-slate-700 transition-all group"
                       >
                         <div
                           className={`w-8 h-8 ${app.bgColor} rounded-lg flex items-center justify-center mb-2 transition-colors`}
