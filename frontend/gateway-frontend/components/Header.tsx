@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -54,7 +54,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 transition-colors">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:!bg-slate-950/95 backdrop-blur-md border-b border-gray-200 dark:!border-slate-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -62,7 +62,7 @@ export default function Header() {
             <div className="w-8 h-8 bg-makrx-blue rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">M</span>
             </div>
-            <span className="text-xl font-bold text-gray-900 dark:text-white transition-colors">
+            <span className="text-xl font-bold text-gray-900 dark:!text-white transition-colors">
               MakrX
             </span>
           </Link>
@@ -75,8 +75,8 @@ export default function Header() {
                 href={item.href}
                 className={`text-sm font-medium transition-colors ${
                   isActive(item.href)
-                    ? "text-makrx-blue dark:text-makrx-yellow"
-                    : "text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white"
+                    ? "text-makrx-blue dark:!text-makrx-yellow"
+                    : "text-gray-600 dark:!text-gray-100 hover:text-gray-900 dark:hover:!text-white"
                 }`}
               >
                 {item.name}
@@ -98,7 +98,7 @@ export default function Header() {
 
               {/* Launcher Dropdown */}
               {showLauncher && (
-                <div className="absolute right-0 top-full mt-2 w-80 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-gray-200 dark:border-slate-600 p-4 z-50">
+                <div className="absolute right-0 top-full mt-2 w-80 bg-white dark:bg-slate-950 rounded-xl shadow-xl border border-gray-200 dark:border-slate-800 p-4 z-50">
                   <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
                     MakrX Apps
                   </h3>
@@ -109,7 +109,7 @@ export default function Header() {
                         href={app.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-3 rounded-lg border border-gray-200 dark:border-slate-600 hover:border-gray-300 dark:hover:border-slate-500 hover:shadow-sm dark:hover:bg-slate-700 transition-all group"
+                        className="p-3 rounded-lg border border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 hover:shadow-sm dark:hover:bg-slate-900 transition-all group"
                       >
                         <div
                           className={`w-8 h-8 ${app.bgColor} rounded-lg flex items-center justify-center mb-2 transition-colors`}
@@ -121,7 +121,7 @@ export default function Header() {
                         <div className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-makrx-blue dark:group-hover:text-makrx-yellow transition-colors">
                           {app.name}
                         </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                        <div className="text-xs text-gray-500 dark:text-gray-300">
                           {app.description}
                         </div>
                       </a>
@@ -170,7 +170,7 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200 dark:border-slate-700">
+          <div className="md:hidden py-4 border-t border-gray-200 dark:border-slate-800">
             <nav className="space-y-4">
               {navigation.map((item) => (
                 <Link
@@ -180,7 +180,7 @@ export default function Header() {
                   className={`block text-sm font-medium transition-colors ${
                     isActive(item.href)
                       ? "text-makrx-blue dark:text-makrx-yellow"
-                      : "text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white"
+                      : "text-gray-600 dark:text-gray-100 hover:text-gray-900 dark:hover:text-white"
                   }`}
                 >
                   {item.name}
@@ -188,8 +188,8 @@ export default function Header() {
               ))}
 
               {/* Mobile Launcher */}
-              <div className="pt-4 border-t border-gray-200 dark:border-slate-700">
-                <div className="text-sm font-medium text-gray-900 dark:text-gray-200 mb-3">
+              <div className="pt-4 border-t border-gray-200 dark:border-slate-800">
+                <div className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
                   MakrX Apps
                 </div>
                 <div className="space-y-2">
@@ -199,7 +199,7 @@ export default function Header() {
                       href={app.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
+                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-900 transition-colors"
                     >
                       <div
                         className={`w-6 h-6 ${app.bgColor} rounded flex items-center justify-center transition-colors`}
@@ -209,14 +209,14 @@ export default function Header() {
                         ></div>
                       </div>
                       <div>
-                        <div className="text-sm font-medium text-gray-900 dark:text-gray-200">
+                        <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
                           {app.name}
                         </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                        <div className="text-xs text-gray-500 dark:text-gray-300">
                           {app.description}
                         </div>
                       </div>
-                      <ExternalLink className="w-4 h-4 text-gray-400 dark:text-gray-400 ml-auto" />
+                      <ExternalLink className="w-4 h-4 text-gray-400 dark:text-gray-300 ml-auto" />
                     </a>
                   ))}
                 </div>
@@ -225,7 +225,7 @@ export default function Header() {
               {/* Mobile Theme Toggle & Sign In */}
               <div className="pt-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-900 dark:text-gray-200">
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
                     Theme
                   </span>
                   <ThemeToggle showLabel />
