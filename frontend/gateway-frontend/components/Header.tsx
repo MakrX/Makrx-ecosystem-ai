@@ -199,7 +199,7 @@ export default function Header() {
                       href={app.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-900 transition-colors"
+                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
                     >
                       <div
                         className={`w-6 h-6 ${app.bgColor} rounded flex items-center justify-center transition-colors`}
@@ -209,14 +209,14 @@ export default function Header() {
                         ></div>
                       </div>
                       <div>
-                        <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                        <div className="text-sm font-medium text-gray-900 dark:text-gray-200">
                           {app.name}
                         </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-300">
+                        <div className="text-xs text-gray-500 dark:text-gray-400">
                           {app.description}
                         </div>
                       </div>
-                      <ExternalLink className="w-4 h-4 text-gray-400 dark:text-gray-300 ml-auto" />
+                      <ExternalLink className="w-4 h-4 text-gray-400 dark:text-gray-400 ml-auto" />
                     </a>
                   ))}
                 </div>
