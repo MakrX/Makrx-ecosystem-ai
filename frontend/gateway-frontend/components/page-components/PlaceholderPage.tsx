@@ -55,9 +55,10 @@ import About from './About';
 import Contact from './Contact';
 import Store from './Store';
 import Makerspaces from './Makerspaces';
+import Ecosystem from './Ecosystem';
 
 // Export the comprehensive components
-export { About, Contact, Store, Makerspaces };
+export { About, Contact, Store, Makerspaces, Ecosystem };
 
 // Specific page components - keeping placeholders for components not yet implemented
 export function Blog() {
