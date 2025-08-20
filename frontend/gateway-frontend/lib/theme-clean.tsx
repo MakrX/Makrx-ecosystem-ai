@@ -215,9 +215,7 @@ export function ThemeToggle({
     const themeOrder: Theme[] = ["system", "light", "dark"];
     const currentIndex = themeOrder.indexOf(theme);
     const nextIndex = (currentIndex + 1) % themeOrder.length;
-    const newTheme = themeOrder[nextIndex];
-    console.log('🎨 Theme cycling:', { from: theme, to: newTheme });
-    setTheme(newTheme);
+    setTheme(themeOrder[nextIndex]);
   };
 
   const getIcon = () => {
