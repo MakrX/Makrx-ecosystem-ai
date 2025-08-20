@@ -9,9 +9,6 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   output: 'standalone',
-  experimental: {
-    runtime: 'nodejs',
-  },
 };
 
 module.exports = nextConfig;
