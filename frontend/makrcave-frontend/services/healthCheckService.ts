@@ -575,7 +575,7 @@ class HealthCheckService {
         timestamp: new Date().toISOString(),
         details: hasRouter ? 'Routing system operational' : 'Routing system unavailable',
         metadata: {
-          currentPath: window.location.pathname,
+          currentPath: typeof window !== 'undefined' ? window.location.pathname : '',
           hasHistory: typeof history !== 'undefined'
         }
       };
