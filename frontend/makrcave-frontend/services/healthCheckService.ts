@@ -327,10 +327,12 @@ class HealthCheckService {
     const startTime = performance.now();
 
     // Determine if this is a cloud environment where API might not be available
-    const isCloudEnvironment = window.location.hostname.includes('fly.dev') ||
+    const isCloudEnvironment = typeof window !== 'undefined' && (
+                               window.location.hostname.includes('fly.dev') ||
                                window.location.hostname.includes('builder.codes') ||
                                window.location.hostname.includes('vercel.app') ||
-                               window.location.hostname.includes('netlify.app');
+                               window.location.hostname.includes('netlify.app')
+                               );
 
     // Skip actual API calls in cloud environments to prevent fetch errors
     if (isCloudEnvironment) {
