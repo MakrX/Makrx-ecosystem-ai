@@ -37,7 +37,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     setMounted(true);
     const stored = localStorage.getItem("makrx-theme") as Theme;
-    if (stored) {
+    if (stored && ['light', 'dark', 'system'].includes(stored)) {
       setTheme(stored);
     }
     setSystem(getSystemTheme());
