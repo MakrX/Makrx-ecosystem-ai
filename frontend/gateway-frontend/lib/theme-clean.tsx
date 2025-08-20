@@ -59,10 +59,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   // apply to <html>
   useEffect(() => {
     if (!mounted) return;
-    
+
     const root = document.documentElement;
-    root.classList.toggle("dark", resolvedTheme === "dark");
-  }, [resolvedTheme, mounted]);
+    const isDark = resolvedTheme === "dark";
+    console.log('🎨 Applying theme to DOM:', { theme, resolvedTheme, isDark, mounted });
+    root.classList.toggle("dark", isDark);
+  }, [resolvedTheme, mounted, theme]);
 
   // persist
   useEffect(() => {
