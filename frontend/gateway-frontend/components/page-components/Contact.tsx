@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { 
   Mail, Phone, MapPin, Clock, Send, CheckCircle, 
   Building2, ShoppingCart, GraduationCap, HelpCircle,
@@ -51,7 +52,7 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
         </div>
       </button>
       {isOpen && (
-        <div className="px-6 pb-4 bg-white dark:bg-slate-800">
+        <div className="px-6 pb-4 bg-gray-50 dark:bg-slate-700">
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{answer}</p>
         </div>
       )}
@@ -64,376 +65,378 @@ export default function Contact() {
     name: '',
     email: '',
     subject: '',
+    category: '',
     message: '',
-    category: 'general'
+    priority: 'normal'
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 2000));
     
     setIsSubmitting(false);
     setIsSubmitted(true);
-    
-    // Reset form after success message
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: '', email: '', subject: '', message: '', category: 'general' });
-    }, 3000);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-  };
+  const faqs = [
+    {
+      question: "How do I get access to a makerspace?",
+      answer: "You can browse available makerspaces on our MakrCave platform, check their schedules, and book time slots directly. Most spaces offer day passes, monthly memberships, or project-based access."
+    },
+    {
+      question: "What equipment is available in makerspaces?",
+      answer: "Our makerspaces are equipped with 3D printers, laser cutters, CNC machines, electronics workbenches, wood workshops, and more. Each space has a detailed equipment list available on their profile page."
+    },
+    {
+      question: "Do you offer training and workshops?",
+      answer: "Yes! We have comprehensive learning programs including hands-on workshops, online courses, and certification programs for all skill levels from beginner to advanced."
+    },
+    {
+      question: "How does the 3D printing service work?",
+      answer: "Upload your design file, get an instant quote, choose materials and quality settings, then place your order. We'll match you with the best provider in our network and handle everything from printing to delivery."
+    },
+    {
+      question: "What safety measures are in place?",
+      answer: "All makerspaces follow strict safety protocols including equipment training requirements, protective gear provision, emergency procedures, and certified operator supervision for high-risk equipment."
+    },
+    {
+      question: "Can I host events or workshops at makerspaces?",
+      answer: "Absolutely! Many of our partner makerspaces offer event hosting services. Contact the specific makerspace or reach out to our team to discuss your requirements and availability."
+    }
+  ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-950">
       {/* Hero Section */}
-      <section className="relative py-24 bg-gradient-to-br from-makrx-blue via-makrx-blue/90 to-purple-900 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }} />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-          <div className="mb-8">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-makrx-yellow/20 text-makrx-yellow text-sm font-medium mb-6">
-              <MessageSquare className="w-4 h-4 mr-2" />
-              Get In Touch
-            </div>
-          </div>
-
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-            Let&apos;s Build
-            <span className="block bg-gradient-to-r from-makrx-yellow to-yellow-300 bg-clip-text text-transparent">
-              Something Amazing
-            </span>
+      <section className="relative py-24 bg-gradient-to-br from-makrx-blue via-makrx-blue/90 to-purple-900">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
+            Get in Touch
           </h1>
-
-          <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Have questions about our makerspaces, need technical support, or want to partner with us? 
-            We&apos;re here to help you succeed.
+          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
+            Have questions? Need support? Want to partner with us? 
+            We're here to help you succeed in your maker journey.
           </p>
         </div>
       </section>
 
-      {/* Contact Methods */}
-      <section className="py-24 bg-gray-50 dark:bg-slate-900">
+      {/* Contact Options */}
+      <section className="py-20 -mt-12 relative z-10">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-              How Can We Help?
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Choose the best way to reach us based on your needs
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <ContactCard
-              icon={<Building2 className="w-8 h-8 text-makrx-blue dark:text-makrx-yellow" />}
-              title="Makerspace Support"
-              description="Questions about equipment, bookings, or makerspace locations across India."
-              contact="makerspaces@makrx.org"
-              href="mailto:makerspaces@makrx.org"
+              icon={<Mail className="w-8 h-8 text-makrx-blue dark:text-makrx-yellow" />}
+              title="General Inquiries"
+              description="Questions about our platform, services, or getting started"
+              contact="hello@makrx.org"
+              href="mailto:hello@makrx.org"
             />
-
-            <ContactCard
-              icon={<ShoppingCart className="w-8 h-8 text-makrx-blue dark:text-makrx-yellow" />}
-              title="Store & Orders"
-              description="Help with orders, products, shipping, or supplier partnerships."
-              contact="store@makrx.org"
-              href="mailto:store@makrx.org"
-            />
-
-            <ContactCard
-              icon={<GraduationCap className="w-8 h-8 text-makrx-blue dark:text-makrx-yellow" />}
-              title="Education & Training"
-              description="Workshop inquiries, corporate training, and educational partnerships."
-              contact="education@makrx.org"
-              href="mailto:education@makrx.org"
-            />
-
             <ContactCard
               icon={<HelpCircle className="w-8 h-8 text-makrx-blue dark:text-makrx-yellow" />}
               title="Technical Support"
-              description="Platform issues, account problems, or technical assistance."
+              description="Need help with equipment, software, or technical issues"
               contact="support@makrx.org"
               href="mailto:support@makrx.org"
             />
-
+            <ContactCard
+              icon={<Building2 className="w-8 h-8 text-makrx-blue dark:text-makrx-yellow" />}
+              title="Partnership"
+              description="Interested in partnering with us or becoming a makerspace host"
+              contact="partners@makrx.org"
+              href="mailto:partners@makrx.org"
+            />
             <ContactCard
               icon={<Phone className="w-8 h-8 text-makrx-blue dark:text-makrx-yellow" />}
-              title="Phone Support"
-              description="Urgent matters or prefer to speak directly with our team."
-              contact="+91 80 4567 8900"
-              href="tel:+918045678900"
-            />
-
-            <ContactCard
-              icon={<MessageSquare className="w-8 h-8 text-makrx-blue dark:text-makrx-yellow" />}
-              title="General Inquiries"
-              description="Business partnerships, media inquiries, or general questions."
-              contact="hello@makrx.org"
-              href="mailto:hello@makrx.org"
+              title="Call Us"
+              description="Speak directly with our team for immediate assistance"
+              contact="+91 12345 67890"
+              href="tel:+911234567890"
             />
           </div>
         </div>
       </section>
 
       {/* Contact Form */}
-      <section className="py-24 bg-white dark:bg-slate-800">
+      <section className="py-20 bg-white dark:bg-slate-900">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
               Send Us a Message
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              We typically respond within 24 hours
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Fill out the form below and we'll get back to you within 24 hours
             </p>
           </div>
 
-          <div className="bg-gray-50 dark:bg-slate-900 rounded-3xl p-8 lg:p-12">
-            {isSubmitted ? (
-              <div className="text-center py-12">
-                <div className="w-20 h-20 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                  Message Sent Successfully!
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Thank you for reaching out. We&apos;ll get back to you within 24 hours.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                      Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      required
-                      value={formData.name}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-makrx-blue dark:focus:ring-makrx-yellow focus:border-transparent transition-colors"
-                      placeholder="Your full name"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-makrx-blue dark:focus:ring-makrx-yellow focus:border-transparent transition-colors"
-                      placeholder="your@email.com"
-                    />
-                  </div>
-                </div>
-
+          {isSubmitted ? (
+            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl p-12 text-center">
+              <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Message Sent!</h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
+                Thank you for reaching out. We've received your message and will get back to you within 24 hours.
+              </p>
+              <button 
+                onClick={() => {
+                  setIsSubmitted(false);
+                  setFormData({
+                    name: '',
+                    email: '',
+                    subject: '',
+                    category: '',
+                    message: '',
+                    priority: 'normal'
+                  });
+                }}
+                className="px-8 py-3 bg-makrx-blue dark:bg-makrx-yellow text-white dark:text-makrx-blue font-semibold rounded-xl hover:bg-blue-700 dark:hover:bg-yellow-300 transition-colors"
+              >
+                Send Another Message
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700 p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                  <label htmlFor="category" className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                    Category
+                  <label htmlFor="name" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-makrx-blue/20 dark:focus:ring-makrx-yellow/20 focus:border-makrx-blue dark:focus:border-makrx-yellow transition-colors bg-white dark:bg-slate-700 text-gray-900 dark:text-white"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="email" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    Email Address *
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-makrx-blue/20 dark:focus:ring-makrx-yellow/20 focus:border-makrx-blue dark:focus:border-makrx-yellow transition-colors bg-white dark:bg-slate-700 text-gray-900 dark:text-white"
+                    placeholder="Enter your email address"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <label htmlFor="category" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    Category *
                   </label>
                   <select
                     id="category"
                     name="category"
                     value={formData.category}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-makrx-blue dark:focus:ring-makrx-yellow focus:border-transparent transition-colors"
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-makrx-blue/20 dark:focus:ring-makrx-yellow/20 focus:border-makrx-blue dark:focus:border-makrx-yellow transition-colors bg-white dark:bg-slate-700 text-gray-900 dark:text-white"
                   >
+                    <option value="">Select a category</option>
                     <option value="general">General Inquiry</option>
-                    <option value="makerspace">Makerspace Support</option>
-                    <option value="store">Store & Orders</option>
                     <option value="technical">Technical Support</option>
                     <option value="partnership">Partnership</option>
-                    <option value="education">Education & Training</option>
+                    <option value="billing">Billing & Payments</option>
+                    <option value="feedback">Feedback & Suggestions</option>
+                    <option value="other">Other</option>
                   </select>
                 </div>
-
+                
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                    Subject *
+                  <label htmlFor="priority" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    Priority
                   </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    required
-                    value={formData.subject}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-makrx-blue dark:focus:ring-makrx-yellow focus:border-transparent transition-colors"
-                    placeholder="Brief description of your inquiry"
-                  />
+                  <select
+                    id="priority"
+                    name="priority"
+                    value={formData.priority}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-makrx-blue/20 dark:focus:ring-makrx-yellow/20 focus:border-makrx-blue dark:focus:border-makrx-yellow transition-colors bg-white dark:bg-slate-700 text-gray-900 dark:text-white"
+                  >
+                    <option value="low">Low</option>
+                    <option value="normal">Normal</option>
+                    <option value="high">High</option>
+                    <option value="urgent">Urgent</option>
+                  </select>
                 </div>
+              </div>
 
-                <div>
-                  <label htmlFor="message" className="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                    Message *
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    required
-                    rows={6}
-                    value={formData.message}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-makrx-blue dark:focus:ring-makrx-yellow focus:border-transparent transition-colors resize-none"
-                    placeholder="Tell us more about how we can help you..."
-                  />
-                </div>
+              <div className="mb-6">
+                <label htmlFor="subject" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  Subject *
+                </label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-makrx-blue/20 dark:focus:ring-makrx-yellow/20 focus:border-makrx-blue dark:focus:border-makrx-yellow transition-colors bg-white dark:bg-slate-700 text-gray-900 dark:text-white"
+                  placeholder="Brief description of your inquiry"
+                />
+              </div>
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full inline-flex items-center justify-center gap-3 px-8 py-4 bg-makrx-blue dark:bg-makrx-yellow text-white dark:text-makrx-blue rounded-xl font-bold text-lg hover:bg-makrx-blue/90 dark:hover:bg-makrx-yellow/90 transition-all transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white dark:border-makrx-blue border-t-transparent rounded-full animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-5 h-5" />
-                      Send Message
-                    </>
-                  )}
-                </button>
-              </form>
-            )}
-          </div>
+              <div className="mb-8">
+                <label htmlFor="message" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  Message *
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  required
+                  rows={6}
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-makrx-blue/20 dark:focus:ring-makrx-yellow/20 focus:border-makrx-blue dark:focus:border-makrx-yellow transition-colors resize-none bg-white dark:bg-slate-700 text-gray-900 dark:text-white"
+                  placeholder="Please provide details about your inquiry..."
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full px-8 py-4 bg-makrx-blue dark:bg-makrx-yellow text-white dark:text-makrx-blue font-semibold rounded-xl hover:bg-blue-700 dark:hover:bg-yellow-300 transition-colors text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white dark:border-makrx-blue mr-3"></div>
+                    Sending Message...
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center">
+                    <Send className="w-5 h-5 mr-2" />
+                    Send Message
+                  </div>
+                )}
+              </button>
+            </form>
+          )}
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="py-24 bg-gray-50 dark:bg-slate-900">
+      <section className="py-20 bg-gray-50 dark:bg-slate-950">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
               Frequently Asked Questions
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              Quick answers to common questions
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Find quick answers to common questions about MakrX
             </p>
           </div>
 
           <div className="space-y-4">
-            <FAQItem
-              question="How do I book a makerspace?"
-              answer="You can book any of our 50+ makerspaces through the MakrCave platform. Simply browse locations, check availability, and book equipment by the hour or day. All bookings include basic training and safety orientation."
-            />
+            {faqs.map((faq, index) => (
+              <FAQItem key={index} question={faq.question} answer={faq.answer} />
+            ))}
+          </div>
 
-            <FAQItem
-              question="What equipment is available in makerspaces?"
-              answer="Our makerspaces feature 3D printers, laser cutters, CNC machines, electronics labs, woodworking tools, and more. Each location has slightly different equipment - check the specific makerspace page for detailed inventory."
-            />
-
-            <FAQItem
-              question="Do you offer training and workshops?"
-              answer="Yes! We offer regular workshops on 3D printing, laser cutting, electronics, programming, and more. We also provide corporate training and educational partnerships. Check our events page or contact education@makrx.org."
-            />
-
-            <FAQItem
-              question="How does MakrX.Store delivery work?"
-              answer="We offer same-day delivery in major cities and 1-3 day delivery nationwide. Free shipping on orders over ₹1000. Track your order through your account dashboard or email notifications."
-            />
-
-            <FAQItem
-              question="Can I get custom fabrication services?"
-              answer="Absolutely! 3D.MakrX.Store connects you with certified professionals for custom 3D printing, laser cutting, PCB fabrication, and CNC machining. Upload your files and get instant quotes."
-            />
-
-            <FAQItem
-              question="What are your business hours?"
-              answer="Most makerspaces are open 9 AM - 9 PM daily. Online support is available 24/7 through our platform. Phone support is available 9 AM - 6 PM Monday-Friday. Emergency technical support is available 24/7."
-            />
+          <div className="text-center mt-12">
+            <p className="text-gray-600 dark:text-gray-300 mb-4">
+              Can't find what you're looking for?
+            </p>
+            <Link 
+              href="/support" 
+              className="inline-flex items-center text-makrx-blue dark:text-makrx-yellow font-semibold hover:text-makrx-blue/80 dark:hover:text-makrx-yellow/80 transition-colors"
+            >
+              Visit our Help Center
+              <ArrowRight className="ml-2 w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Location & Hours */}
-      <section className="py-24 bg-white dark:bg-slate-800">
+      {/* Office Locations */}
+      <section className="py-20 bg-white dark:bg-slate-900">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-                Visit Our Headquarters
-              </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-                Located in the heart of Bangalore&apos;s tech district, our headquarters 
-                houses our main makerspace, training center, and customer support team.
-              </p>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+              Visit Our Offices
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              We have offices across major cities in India
+            </p>
+          </div>
 
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-makrx-blue/10 dark:bg-makrx-yellow/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-6 h-6 text-makrx-blue dark:text-makrx-yellow" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Address</h3>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      MakrX Technologies Pvt Ltd<br />
-                      #42, 3rd Floor, Koramangala<br />
-                      Bangalore, Karnataka 560034<br />
-                      India
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-makrx-blue/10 dark:bg-makrx-yellow/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Clock className="w-6 h-6 text-makrx-blue dark:text-makrx-yellow" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Business Hours</h3>
-                    <div className="text-gray-600 dark:text-gray-300 space-y-1">
-                      <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-                      <p>Saturday: 10:00 AM - 4:00 PM</p>
-                      <p>Sunday: Closed</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                city: "Bangalore",
+                address: "HSR Layout, Sector 2\nBangalore, Karnataka 560102",
+                phone: "+91 80 4567 8901",
+                email: "bangalore@makrx.org",
+                hours: "Mon-Sat: 9 AM - 8 PM"
+              },
+              {
+                city: "Mumbai",
+                address: "Bandra West, Off SV Road\nMumbai, Maharashtra 400050",
+                phone: "+91 22 4567 8902",
+                email: "mumbai@makrx.org",
+                hours: "Mon-Sat: 9 AM - 8 PM"
+              },
+              {
+                city: "Delhi",
+                address: "Connaught Place\nNew Delhi, Delhi 110001",
+                phone: "+91 11 4567 8903",
+                email: "delhi@makrx.org",
+                hours: "Mon-Sat: 9 AM - 8 PM"
+              }
+            ].map((office, index) => (
+              <div key={index} className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-8">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">{office.city}</h3>
+                
+                <div className="space-y-4">
+                  <div className="flex items-start">
+                    <MapPin className="w-5 h-5 text-makrx-blue dark:text-makrx-yellow mr-3 mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">{office.address}</p>
                     </div>
                   </div>
+                  
+                  <div className="flex items-center">
+                    <Phone className="w-5 h-5 text-makrx-blue dark:text-makrx-yellow mr-3 flex-shrink-0" />
+                    <a href={`tel:${office.phone.replace(/\s/g, '')}`} className="text-gray-700 dark:text-gray-300 hover:text-makrx-blue dark:hover:text-makrx-yellow transition-colors">
+                      {office.phone}
+                    </a>
+                  </div>
+                  
+                  <div className="flex items-center">
+                    <Mail className="w-5 h-5 text-makrx-blue dark:text-makrx-yellow mr-3 flex-shrink-0" />
+                    <a href={`mailto:${office.email}`} className="text-gray-700 dark:text-gray-300 hover:text-makrx-blue dark:hover:text-makrx-yellow transition-colors">
+                      {office.email}
+                    </a>
+                  </div>
+                  
+                  <div className="flex items-center">
+                    <Clock className="w-5 h-5 text-makrx-blue dark:text-makrx-yellow mr-3 flex-shrink-0" />
+                    <p className="text-gray-700 dark:text-gray-300">{office.hours}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="bg-gray-100 dark:bg-slate-700 rounded-3xl p-8 text-center">
-              <div className="w-full h-64 bg-gray-200 dark:bg-slate-600 rounded-2xl flex items-center justify-center mb-6">
-                <MapPin className="w-16 h-16 text-gray-400 dark:text-gray-500" />
-              </div>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
-                Interactive map coming soon. For now, use the address above with your preferred maps application.
-              </p>
-              <a
-                href="https://maps.google.com/?q=Koramangala,Bangalore"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-makrx-blue dark:bg-makrx-yellow text-white dark:text-makrx-blue rounded-xl font-semibold hover:bg-makrx-blue/90 dark:hover:bg-makrx-yellow/90 transition-colors"
-              >
-                Open in Maps
-                <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
+            ))}
           </div>
         </div>
       </section>
