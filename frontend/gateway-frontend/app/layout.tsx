@@ -1,10 +1,24 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { ThemeProvider } from '../lib/theme-clean';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import IdleTimeoutBanner from '../components/IdleTimeoutBanner';
+import dynamic from 'next/dynamic';
+
+// Dynamically import theme-aware components to avoid SSR issues
+const ThemeProvider = dynamic(() => import('../lib/theme-clean').then(mod => ({ default: mod.ThemeProvider })), {
+  ssr: false
+});
+
+const Header = dynamic(() => import('../components/Header'), {
+  ssr: false
+});
+
+const Footer = dynamic(() => import('../components/Footer'), {
+  ssr: false
+});
+
+const IdleTimeoutBanner = dynamic(() => import('../components/IdleTimeoutBanner'), {
+  ssr: false
+});
 
 const inter = Inter({ subsets: ['latin'] });
 
