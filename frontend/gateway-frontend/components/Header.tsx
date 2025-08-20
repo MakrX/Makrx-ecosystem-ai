@@ -121,7 +121,7 @@ export default function Header() {
                         <div className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-makrx-blue dark:group-hover:text-makrx-yellow transition-colors">
                           {app.name}
                         </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-300">
+                        <div className="text-xs text-gray-500 dark:text-gray-400">
                           {app.description}
                         </div>
                       </a>
