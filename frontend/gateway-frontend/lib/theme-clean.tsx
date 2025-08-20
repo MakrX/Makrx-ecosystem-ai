@@ -95,7 +95,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 export const useTheme = () => {
   const ctx = useContext(ThemeCtx);
   if (!ctx) {
-    throw new Error("useTheme must be used inside <ThemeProvider>");
+    // Return default values instead of throwing during SSR
+    return {
+      theme: 'system' as Theme,
+      setTheme: () => {},
+      resolvedTheme: 'light' as const,
+    };
   }
   return ctx;
 };
