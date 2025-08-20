@@ -75,8 +75,8 @@ export default function Header() {
                 href={item.href}
                 className={`text-sm font-medium transition-colors ${
                   isActive(item.href)
-                    ? "text-makrx-blue dark:!text-makrx-yellow"
-                    : "text-gray-600 dark:!text-gray-100 hover:text-gray-900 dark:hover:!text-white"
+                    ? "text-makrx-blue dark:text-makrx-yellow"
+                    : "text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
                 {item.name}
