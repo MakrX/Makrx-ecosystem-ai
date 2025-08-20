@@ -74,15 +74,19 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     [theme, resolvedTheme],
   );
 
-  // Prevent hydration mismatch by providing default values when not mounted
-  const defaultValue = {
-    theme: 'system' as Theme,
-    setTheme: () => {},
-    resolvedTheme: 'light' as const,
-  };
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return (
+      <ThemeCtx.Provider value={{ theme: 'system', setTheme: () => {}, resolvedTheme: 'light' }}>
+        <div suppressHydrationWarning>
+          {children}
+        </div>
+      </ThemeCtx.Provider>
+    );
+  }
 
   return (
-    <ThemeCtx.Provider value={mounted ? value : defaultValue}>
+    <ThemeCtx.Provider value={value}>
       {children}
     </ThemeCtx.Provider>
   );
