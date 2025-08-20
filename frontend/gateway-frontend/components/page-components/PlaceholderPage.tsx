@@ -88,14 +88,6 @@ export function Docs() {
   );
 }
 
-export function Ecosystem() {
-  return (
-    <PlaceholderPage
-      title="MakrX Ecosystem"
-      description="Explore the complete digital manufacturing ecosystem connecting makers, spaces, and services."
-    />
-  );
-}
 
 export function Events() {
   return (
