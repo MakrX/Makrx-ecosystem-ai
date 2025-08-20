@@ -225,7 +225,7 @@ export default function Header() {
               {/* Mobile Theme Toggle & Sign In */}
               <div className="pt-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-200">
                     Theme
                   </span>
                   <ThemeToggle showLabel />
