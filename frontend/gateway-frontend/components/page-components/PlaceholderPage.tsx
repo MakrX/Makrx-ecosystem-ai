@@ -63,14 +63,6 @@ import Blog from './Blog';
 export { About, Contact, Store, Makerspaces, Ecosystem, HomePage, Blog };
 
 // Specific page components - keeping placeholders for components not yet implemented
-export function Blog() {
-  return (
-    <PlaceholderPage
-      title="MakrX Blog"
-      description="Discover the latest insights, tutorials, and stories from the maker community."
-    />
-  );
-}
 
 export function Careers() {
   return (
