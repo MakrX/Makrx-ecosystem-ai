@@ -95,14 +95,7 @@ export function Events() {
   );
 }
 
-export function Press() {
-  return (
-    <PlaceholderPage
-      title="Press & Media"
-      description="Latest news, press releases, and media coverage about MakrX."
-    />
-  );
-}
+// Press is now imported as a comprehensive component above
 
 export function ServiceProviders() {
   return (
