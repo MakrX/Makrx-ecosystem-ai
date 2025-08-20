@@ -151,25 +151,7 @@ export function ThemeDemo() {
   );
 }
 
-export function PrivacyPolicy() {
-  return (
-    <PlaceholderPage
-      title="Privacy Policy"
-      description="How we collect, use, and protect your personal information."
-      comingSoon={false}
-    />
-  );
-}
-
-export function TermsOfService() {
-  return (
-    <PlaceholderPage
-      title="Terms of Service"
-      description="Terms and conditions for using MakrX platforms and services."
-      comingSoon={false}
-    />
-  );
-}
+// PrivacyPolicy and TermsOfService are now imported as comprehensive components above
 
 export function NotFound() {
   return (
