@@ -83,9 +83,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <ThemeCtx.Provider value={mounted ? value : defaultValue}>
-      <div style={!mounted ? { visibility: 'hidden' } : {}}>
-        {children}
-      </div>
+      {children}
     </ThemeCtx.Provider>
   );
 };
