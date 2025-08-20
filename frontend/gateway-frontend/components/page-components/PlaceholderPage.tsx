@@ -58,9 +58,12 @@ import Makerspaces from './Makerspaces';
 import Ecosystem from './Ecosystem';
 import HomePage from './HomePage';
 import Blog from './Blog';
+import TermsOfService from './TermsOfService';
+import PrivacyPolicy from './PrivacyPolicy';
+import Press from './Press';
 
 // Export the comprehensive components
-export { About, Contact, Store, Makerspaces, Ecosystem, HomePage, Blog };
+export { About, Contact, Store, Makerspaces, Ecosystem, HomePage, Blog, TermsOfService, PrivacyPolicy, Press };
 
 // Specific page components - keeping placeholders for components not yet implemented
 
