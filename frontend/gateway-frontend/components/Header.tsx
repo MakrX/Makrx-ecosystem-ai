@@ -188,8 +188,8 @@ export default function Header() {
               ))}
 
               {/* Mobile Launcher */}
-              <div className="pt-4 border-t border-gray-200 dark:border-slate-800">
-                <div className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
+              <div className="pt-4 border-t border-gray-200 dark:border-slate-700">
+                <div className="text-sm font-medium text-gray-900 dark:text-gray-200 mb-3">
                   MakrX Apps
                 </div>
                 <div className="space-y-2">
