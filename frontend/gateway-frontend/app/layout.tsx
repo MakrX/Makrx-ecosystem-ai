@@ -8,6 +8,9 @@ import IdleTimeoutBanner from '../components/IdleTimeoutBanner';
 
 const inter = Inter({ subsets: ['latin'] });
 
+// Force dynamic rendering to avoid SSR issues
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: {
     default: 'MakrX - Digital Manufacturing Ecosystem',
