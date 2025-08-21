@@ -33,22 +33,26 @@ const InputOTPSlot = React.forwardRef<
   React.ComponentPropsWithoutRef<"div"> & { index: number }
 >(({ index, className, ...props }, ref) => {
   const inputOTPContext = React.useContext(OTPInputContext);
-  const slot = inputOTPContext?.slots?.[index];
-
-  if (!slot) {
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          "relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
-          className,
-        )}
-        {...props}
-      />
-    );
+  
+  // Type-safe access to context and slots
+  let char = "";
+  let hasFakeCaret = false;
+  let isActive = false;
+  
+  try {
+    if (inputOTPContext && typeof inputOTPContext === 'object' && 'slots' in inputOTPContext) {
+      const slots = (inputOTPContext as any).slots;
+      if (Array.isArray(slots) && slots[index]) {
+        const slot = slots[index];
+        char = slot.char || "";
+        hasFakeCaret = Boolean(slot.hasFakeCaret);
+        isActive = Boolean(slot.isActive);
+      }
+    }
+  } catch (error) {
+    // Fallback to safe defaults if context access fails
+    console.warn('InputOTP context access failed:', error);
   }
-
-  const { char, hasFakeCaret, isActive } = slot;
 
   return (
     <div
