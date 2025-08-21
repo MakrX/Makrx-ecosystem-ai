@@ -85,11 +85,28 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    try {
+      // Simulate form submission
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+
+      // Show success toast
+      toast({
+        title: "Message sent successfully!",
+        description: "Thank you for contacting us. We'll get back to you within 24 hours.",
+      });
+    } catch (error) {
+      setIsSubmitting(false);
+
+      // Show error toast
+      toast({
+        title: "Failed to send message",
+        description: "Please try again or contact us directly at hello@makrx.org",
+        variant: "destructive",
+      });
+    }
   };
 
   const faqs = [
