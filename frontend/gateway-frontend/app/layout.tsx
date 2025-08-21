@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import IdleTimeoutBanner from '../components/IdleTimeoutBanner';
 import HydrationWarningSupressor from '../components/HydrationWarningSupressor';
+import { Toaster } from '../components/ui/toaster';
 
 const inter = Inter({ subsets: ['latin'] });
 
