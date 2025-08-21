@@ -5,6 +5,7 @@ import { ThemeProvider } from '../lib/theme-clean';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import IdleTimeoutBanner from '../components/IdleTimeoutBanner';
+import HydrationWarningSupressor from '../components/HydrationWarningSupressor';
 
 const inter = Inter({ subsets: ['latin'] });
 
