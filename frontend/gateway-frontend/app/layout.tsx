@@ -113,6 +113,7 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className} suppressHydrationWarning={true}>
+        <HydrationWarningSupressor />
         <ThemeProvider>
           <IdleTimeoutBanner />
           <div className="min-h-screen flex flex-col">
