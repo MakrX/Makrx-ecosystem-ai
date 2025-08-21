@@ -222,6 +222,18 @@ export default function Contact() {
               >
                 Send Another Message
               </button>
+              <button
+                type="button"
+                onClick={() => {
+                  toast({
+                    title: "Test notification",
+                    description: "This is a test toast to verify the functionality is working properly.",
+                  });
+                }}
+                className="px-8 py-3 bg-gray-500 text-white font-semibold rounded-xl hover:bg-gray-600 transition-colors ml-4"
+              >
+                Test Toast
+              </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700 p-8">
