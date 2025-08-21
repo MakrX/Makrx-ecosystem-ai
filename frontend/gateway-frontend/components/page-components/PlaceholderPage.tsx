@@ -71,15 +71,6 @@ export { About, Contact, Store, Makerspaces, Ecosystem, HomePage, Blog, TermsOfS
 
 // Specific page components - keeping placeholders for components not yet implemented
 
-export function Careers() {
-  return (
-    <PlaceholderPage
-      title="Careers at MakrX"
-      description="Join our team and help shape the future of digital manufacturing in India."
-    />
-  );
-}
-
 export function Docs() {
   return (
     <PlaceholderPage
