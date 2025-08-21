@@ -65,9 +65,10 @@ import Careers from './Careers';
 import Support from './Support';
 import Status from './Status';
 import ThemeDemo from './ThemeDemo';
+import ThreeDStore from './ThreeDStore';
 
 // Export the comprehensive components
-export { About, Contact, Store, Makerspaces, Ecosystem, HomePage, Blog, TermsOfService, PrivacyPolicy, Press, Careers, Support, Status, ThemeDemo };
+export { About, Contact, Store, Makerspaces, Ecosystem, HomePage, Blog, TermsOfService, PrivacyPolicy, Press, Careers, Support, Status, ThemeDemo, ThreeDStore };
 
 // Specific page components - keeping placeholders for components not yet implemented
 
