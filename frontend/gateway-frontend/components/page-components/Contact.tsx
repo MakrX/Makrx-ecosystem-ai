@@ -2,11 +2,12 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { 
-  Mail, Phone, MapPin, Clock, Send, CheckCircle, 
+import {
+  Mail, Phone, MapPin, Clock, Send, CheckCircle,
   Building2, ShoppingCart, GraduationCap, HelpCircle,
   MessageSquare, Calendar, ArrowRight, Star, ChevronDown
 } from 'lucide-react';
+import { useToast } from '../../hooks/use-toast';
 
 interface ContactCardProps {
   icon: React.ReactNode;
