@@ -93,6 +93,16 @@ export default function RootLayout({
                   document.documentElement.classList.add(resolvedTheme);
                   document.documentElement.setAttribute('data-theme', resolvedTheme);
                   document.documentElement.style.colorScheme = resolvedTheme;
+
+                  // Suppress common browser extension attributes that cause hydration warnings
+                  if (typeof window !== 'undefined') {
+                    const suppressedAttrs = ['data-new-gr-c-s-check-loaded', 'data-gr-ext-installed'];
+                    suppressedAttrs.forEach(attr => {
+                      if (document.body && document.body.hasAttribute(attr)) {
+                        document.body.removeAttribute(attr);
+                      }
+                    });
+                  }
                 } catch (e) {
                   console.warn('Theme initialization failed:', e);
                 }
