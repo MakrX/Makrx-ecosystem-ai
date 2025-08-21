@@ -61,9 +61,13 @@ import Blog from './Blog';
 import TermsOfService from './TermsOfService';
 import PrivacyPolicy from './PrivacyPolicy';
 import Press from './Press';
+import Careers from './Careers';
+import Support from './Support';
+import Status from './Status';
+import ThemeDemo from './ThemeDemo';
 
 // Export the comprehensive components
-export { About, Contact, Store, Makerspaces, Ecosystem, HomePage, Blog, TermsOfService, PrivacyPolicy, Press };
+export { About, Contact, Store, Makerspaces, Ecosystem, HomePage, Blog, TermsOfService, PrivacyPolicy, Press, Careers, Support, Status, ThemeDemo };
 
 // Specific page components - keeping placeholders for components not yet implemented
 
