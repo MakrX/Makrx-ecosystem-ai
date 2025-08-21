@@ -104,14 +104,7 @@ export function ServiceProviders() {
 
 // Status and Support components are now implemented above
 
-export function ThreeDStore() {
-  return (
-    <PlaceholderPage
-      title="3D.MakrX.Store"
-      description="Custom 3D printing, laser cutting, and fabrication services from professionals."
-    />
-  );
-}
+// ThreeDStore component is now implemented above
 
 // ThemeDemo component is now implemented above
 
