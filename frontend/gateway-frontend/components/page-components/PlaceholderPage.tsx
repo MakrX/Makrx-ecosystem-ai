@@ -112,15 +112,7 @@ export function ThreeDStore() {
   );
 }
 
-export function ThemeDemo() {
-  return (
-    <PlaceholderPage
-      title="Theme Demo"
-      description="Preview and test the MakrX theme system and design components."
-      comingSoon={false}
-    />
-  );
-}
+// ThemeDemo component is now implemented above
 
 // PrivacyPolicy and TermsOfService are now imported as comprehensive components above
 
