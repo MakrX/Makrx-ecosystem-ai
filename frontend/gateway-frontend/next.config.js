@@ -13,6 +13,11 @@ const nextConfig = {
     // Force dynamic rendering to avoid SSR issues with theme provider
     forceSwcTransforms: true,
   },
+  // Allow cross-origin requests from Builder.io preview
+  allowedDevOrigins: [
+    '*.builder.io',
+    '*.fly.dev',
+  ],
   async redirects() {
     return [];
   },
