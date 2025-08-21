@@ -133,6 +133,7 @@ export default function RootLayout({
 
             <Footer />
           </div>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
