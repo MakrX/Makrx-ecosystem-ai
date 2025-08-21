@@ -1,12 +1,30 @@
-'use client';
-
+import type { Metadata } from 'next';
 import { Calendar, ExternalLink, Users, Clock, MapPin } from 'lucide-react';
+import SEOStructuredData from '../../components/SEOStructuredData';
 
 export const dynamic = 'force-dynamic';
 
+export const metadata: Metadata = {
+  title: 'Events & Workshops - Join the Maker Community | MakrX',
+  description: 'Discover maker workshops, community meetups, and events across India. Connect with fellow creators, learn new skills, and join the maker movement.',
+  keywords: ['maker events', 'workshops', 'community meetups', 'maker gatherings', 'learn skills', 'maker movement india'],
+  openGraph: {
+    title: 'Events & Workshops - Join the Maker Community',
+    description: 'Discover maker workshops, community meetups, and events across India.',
+    url: 'https://makrx.org/events',
+    type: 'website',
+  },
+  twitter: {
+    title: 'MakrX Events & Workshops',
+    description: 'Discover maker workshops, community meetups, and events across India.',
+  },
+};
+
 export default function EventsPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-makrx-blue to-purple-900 dark:from-gray-900 dark:to-makrx-blue/20">
+    <>
+      <SEOStructuredData type="website" data={{ title: 'Events & Workshops', description: 'Maker community events and workshops' }} />
+      <div className="min-h-screen bg-gradient-to-br from-makrx-blue to-purple-900 dark:from-gray-900 dark:to-makrx-blue/20">
       <div className="container mx-auto px-4 py-16">
         <div className="text-center max-w-4xl mx-auto">
           {/* Header Section */}
@@ -71,6 +89,7 @@ export default function EventsPage() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
