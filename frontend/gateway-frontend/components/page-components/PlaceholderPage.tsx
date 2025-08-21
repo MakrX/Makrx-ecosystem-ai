@@ -101,24 +101,7 @@ export function ServiceProviders() {
   );
 }
 
-export function Status() {
-  return (
-    <PlaceholderPage
-      title="System Status"
-      description="Real-time status and uptime information for all MakrX services."
-      comingSoon={false}
-    />
-  );
-}
-
-export function Support() {
-  return (
-    <PlaceholderPage
-      title="Support Center"
-      description="Get help with your MakrX account, services, and technical questions."
-    />
-  );
-}
+// Status and Support components are now implemented above
 
 export function ThreeDStore() {
   return (
