@@ -1,3 +1,5 @@
+'use client';
+
 import React, {
   createContext,
   useContext,
@@ -17,6 +19,7 @@ type Ctx = {
 const ThemeCtx = createContext<Ctx | null>(null);
 
 function getSystemTheme(): "light" | "dark" {
+  if (typeof window === "undefined") return "light";
   return window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
@@ -26,15 +29,24 @@ function getSystemTheme(): "light" | "dark" {
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem("makrx-theme") as Theme) || "system",
-  );
-  const [system, setSystem] = useState<"light" | "dark">(() =>
-    typeof window !== "undefined" ? getSystemTheme() : "light",
-  );
+  const [theme, setTheme] = useState<Theme>("system");
+  const [system, setSystem] = useState<"light" | "dark">("light");
+  const [mounted, setMounted] = useState(false);
+
+  // Initialize theme from localStorage after mount
+  useEffect(() => {
+    setMounted(true);
+    const stored = localStorage.getItem("makrx-theme") as Theme;
+    if (stored && ['light', 'dark', 'system'].includes(stored)) {
+      setTheme(stored);
+    }
+    setSystem(getSystemTheme());
+  }, []);
 
   // react to system changes
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
     const handler = () => setSystem(getSystemTheme());
     mq.addEventListener?.("change", handler);
@@ -45,25 +57,51 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // apply to <html>
   useEffect(() => {
+    if (!mounted) return;
+
     const root = document.documentElement;
     root.classList.toggle("dark", resolvedTheme === "dark");
-  }, [resolvedTheme]);
+  }, [resolvedTheme, mounted]);
 
   // persist
   useEffect(() => {
+    if (!mounted) return;
     localStorage.setItem("makrx-theme", theme);
-  }, [theme]);
+  }, [theme, mounted]);
 
   const value = useMemo(
     () => ({ theme, setTheme, resolvedTheme }),
     [theme, resolvedTheme],
   );
-  return <ThemeCtx.Provider value={value}>{children}</ThemeCtx.Provider>;
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return (
+      <ThemeCtx.Provider value={{ theme: 'system', setTheme: () => {}, resolvedTheme: 'light' }}>
+        <div suppressHydrationWarning>
+          {children}
+        </div>
+      </ThemeCtx.Provider>
+    );
+  }
+
+  return (
+    <ThemeCtx.Provider value={value}>
+      {children}
+    </ThemeCtx.Provider>
+  );
 };
 
 export const useTheme = () => {
   const ctx = useContext(ThemeCtx);
-  if (!ctx) throw new Error("useTheme must be used inside <ThemeProvider>");
+  if (!ctx) {
+    // Return default values instead of throwing during SSR
+    return {
+      theme: 'system' as Theme,
+      setTheme: () => {},
+      resolvedTheme: 'light' as const,
+    };
+  }
   return ctx;
 };
 

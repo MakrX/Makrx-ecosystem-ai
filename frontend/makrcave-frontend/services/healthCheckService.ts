@@ -327,10 +327,12 @@ class HealthCheckService {
     const startTime = performance.now();
 
     // Determine if this is a cloud environment where API might not be available
-    const isCloudEnvironment = window.location.hostname.includes('fly.dev') ||
+    const isCloudEnvironment = typeof window !== 'undefined' && (
+                               window.location.hostname.includes('fly.dev') ||
                                window.location.hostname.includes('builder.codes') ||
                                window.location.hostname.includes('vercel.app') ||
-                               window.location.hostname.includes('netlify.app');
+                               window.location.hostname.includes('netlify.app')
+                               );
 
     // Skip actual API calls in cloud environments to prevent fetch errors
     if (isCloudEnvironment) {
@@ -573,7 +575,7 @@ class HealthCheckService {
         timestamp: new Date().toISOString(),
         details: hasRouter ? 'Routing system operational' : 'Routing system unavailable',
         metadata: {
-          currentPath: window.location.pathname,
+          currentPath: typeof window !== 'undefined' ? window.location.pathname : '',
           hasHistory: typeof history !== 'undefined'
         }
       };
@@ -666,6 +668,7 @@ class HealthCheckService {
 
   // Get current environment
   private getEnvironment(): string {
+    if (typeof window === 'undefined') return 'development';
     if (window.location.hostname.includes('localhost')) return 'development';
     if (window.location.hostname.includes('staging')) return 'staging';
     if (window.location.hostname.includes('fly.dev') || window.location.hostname.includes('builder.codes')) return 'cloud';

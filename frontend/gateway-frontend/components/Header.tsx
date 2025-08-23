@@ -1,14 +1,17 @@
+"use client";
+
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X, ExternalLink, Grid3X3 } from "lucide-react";
 import { ThemeToggle } from "../lib/theme-clean";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showLauncher, setShowLauncher] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => pathname === path;
 
   const navigation = [
     { name: "Ecosystem", href: "/ecosystem" },
@@ -55,7 +58,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3">
             <div className="w-8 h-8 bg-makrx-blue rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">M</span>
             </div>
@@ -69,7 +72,7 @@ export default function Header() {
             {navigation.map((item) => (
               <Link
                 key={item.name}
-                to={item.href}
+                href={item.href}
                 className={`text-sm font-medium transition-colors ${
                   isActive(item.href)
                     ? "text-makrx-blue dark:!text-makrx-yellow"
@@ -126,7 +129,7 @@ export default function Header() {
                   </div>
                   <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-600">
                     <Link
-                      to="/docs"
+                      href="/docs"
                       className="text-sm text-makrx-blue hover:text-blue-700 dark:text-makrx-yellow dark:hover:text-yellow-300 transition-colors"
                       onClick={() => setShowLauncher(false)}
                     >
@@ -172,7 +175,7 @@ export default function Header() {
               {navigation.map((item) => (
                 <Link
                   key={item.name}
-                  to={item.href}
+                  href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block text-sm font-medium transition-colors ${
                     isActive(item.href)

@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     # Basic app settings
     APP_NAME: str = "MakrX Store API"
     ENVIRONMENT: str = Field("development", regex="^(development|staging|production)$")
-    DEBUG: bool = Field(True, description="Enable debug mode")
+    DEBUG: bool = Field(False, description="Enable debug mode")
     SECRET_KEY: str = Field(default_factory=lambda: secrets.token_urlsafe(32))
 
     # CORS and security
@@ -60,13 +60,20 @@ class Settings(BaseSettings):
             return f"{values['KEYCLOAK_ISSUER']}/protocol/openid-connect/certs"
         return v
 
+    @validator("DEBUG", pre=True, always=True)
+    def validate_debug_mode(cls, v, values):
+        # Force debug off in production
+        if values.get("ENVIRONMENT") == "production":
+            return False
+        return v
+
     # S3/MinIO Storage
     S3_ENDPOINT: str = Field(
         "http://localhost:9000", description="S3 or MinIO endpoint URL"
     )
     S3_BUCKET: str = Field("makrx-uploads", description="S3 bucket name")
-    S3_ACCESS_KEY: str = Field("minio", description="S3 access key")
-    S3_SECRET_KEY: str = Field("minio123", description="S3 secret key")
+    S3_ACCESS_KEY: str = Field(..., description="S3 access key")
+    S3_SECRET_KEY: str = Field(..., description="S3 secret key")
     S3_REGION: str = Field("us-east-1", description="S3 region")
     S3_USE_SSL: bool = Field(True, description="Use SSL for S3 connections")
 

@@ -1,16 +1,20 @@
 {
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"],
-      "@/components/*": ["src/components/*"],
-      "@/lib/*": ["src/lib/*"],
-      "@/types/*": ["src/types/*"],
-      "@/store/*": ["src/store/*"],
-      "@/utils/*": ["src/utils/*"]
-    }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"],
+            "@/components/*": ["src/components/*"],
+            "@/lib/*": ["src/lib/*"],
+            "@/types/*": ["src/types/*"],
+            "@/store/*": ["src/store/*"],
+            "@/utils/*": ["src/utils/*"],
+            "@makrx/ui": ["../packages/ui"],
+            "@makrx/types": ["../packages/types"],
+            "@makrx/utils": ["../packages/utils"],
+            "@makrx/feature-flags": ["../packages/feature-flags/src"]
+        }
+    },
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+    "exclude": ["node_modules"]
 }

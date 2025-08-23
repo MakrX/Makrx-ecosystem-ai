@@ -1,5 +1,5 @@
 # Multi-stage build for production
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 # Set working directory
 WORKDIR /app
@@ -44,6 +44,10 @@ RUN mkdir -p /var/run/nginx && \
 
 # Switch to non-root user
 USER nginx-user
+
+# Fix nginx PID file permissions
+RUN touch /var/run/nginx/nginx.pid && \
+    chown nginx-user:nginx-user /var/run/nginx/nginx.pid
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \

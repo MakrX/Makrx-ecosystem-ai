@@ -16,118 +16,113 @@
  * CSS Integration: Applies 'light'/'dark' classes to document root
  */
 
+'use client';
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 /**
  * Available theme options
- * - 'light': Force light theme
- * - 'dark': Force dark theme
- * - 'system': Use OS/browser preference
  */
-type Theme = 'light' | 'dark' | 'system';
+export type Theme = 'light' | 'dark' | 'system';
 
 /**
- * Theme context interface providing theme state and controls
+ * Theme context type definition
  */
 interface ThemeContextType {
-  /** Current theme setting (user's choice) */
   theme: Theme;
-  /** Function to change theme setting */
+  resolvedTheme: 'light' | 'dark';
   setTheme: (theme: Theme) => void;
-  /** Resolved theme (what's actually applied) */
-  effectiveTheme: 'light' | 'dark';
+  systemTheme: 'light' | 'dark';
 }
 
 /**
- * React context for theme management
- * Undefined by default to enforce provider usage
+ * Theme context instance
  */
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 /**
- * ThemeProvider component that manages theme state for the entire application
- *
- * This provider should wrap the entire app to ensure theme context is available
- * to all components. It handles:
- * - Theme persistence via localStorage
- * - System theme detection and monitoring
- * - CSS class application to document root
- * - SSR-safe initialization
- *
- * @param children - React components to wrap with theme context
+ * Detects system theme preference
+ */
+function getSystemTheme(): 'light' | 'dark' {
+  if (typeof window === 'undefined') return 'light';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+/**
+ * Theme Provider Component
+ * 
+ * Wraps the application to provide theme management functionality
  */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // Initialize theme from localStorage or default to 'system'
-  // SSR-safe: defaults to 'system' on server, reads from localStorage on client
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('makrx-theme') as Theme;
-      return stored || 'system';
-    }
-    return 'system'; // Default for SSR
-  });
+  const [theme, setThemeState] = useState<Theme>('system');
+  const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
+  const [mounted, setMounted] = useState(false);
 
-  // Track the resolved theme (light or dark) that gets applied to UI
-  const [effectiveTheme, setEffectiveTheme] = useState<'light' | 'dark'>('light');
-
-  // Effect to determine and monitor the effective theme
+  // Initialize theme from localStorage after mount
   useEffect(() => {
-    /**
-     * Updates the effective theme based on current theme setting
-     * - If theme is 'system': detects OS preference using media query
-     * - If theme is 'light' or 'dark': uses that value directly
-     */
-    const updateEffectiveTheme = () => {
-      if (theme === 'system') {
-        // Use CSS media query to detect OS/browser theme preference
-        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        setEffectiveTheme(systemTheme);
-      } else {
-        // Use explicit theme setting
-        setEffectiveTheme(theme);
-      }
-    };
-
-    // Initial theme calculation
-    updateEffectiveTheme();
-
-    // Set up listener for system theme changes (only when using 'system' mode)
-    if (theme === 'system') {
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-      // Listen for OS theme changes and update accordingly
-      mediaQuery.addEventListener('change', updateEffectiveTheme);
-
-      // Cleanup listener when component unmounts or theme changes
-      return () => mediaQuery.removeEventListener('change', updateEffectiveTheme);
+    setMounted(true);
+    const stored = localStorage.getItem('makrx-theme') as Theme;
+    if (stored && ['light', 'dark', 'system'].includes(stored)) {
+      setThemeState(stored);
     }
-  }, [theme]);
+    setSystemTheme(getSystemTheme());
+  }, []);
 
-  // Effect to apply theme to DOM and persist user preference
+  // Listen for system theme changes
   useEffect(() => {
-    const root = window.document.documentElement;
+    if (typeof window === 'undefined') return;
+    
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = () => setSystemTheme(getSystemTheme());
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
-    // Remove any existing theme classes to avoid conflicts
+  // Resolve theme (system -> light/dark)
+  const resolvedTheme: 'light' | 'dark' = theme === 'system' ? systemTheme : theme;
+
+  // Apply theme to document
+  useEffect(() => {
+    if (!mounted) return;
+    
+    const root = document.documentElement;
+    
+    // Remove existing theme classes
     root.classList.remove('light', 'dark');
+    
+    // Add current theme class
+    root.classList.add(resolvedTheme);
+    
+    // Set data attribute for CSS compatibility
+    root.setAttribute('data-theme', resolvedTheme);
+    
+    // Set color-scheme for better browser integration
+    root.style.colorScheme = resolvedTheme;
+  }, [resolvedTheme, mounted]);
 
-    // Add the current effective theme class for CSS styling
-    // This enables Tailwind's dark: modifier and custom CSS selectors
-    root.classList.add(effectiveTheme);
+  // Theme setter with persistence
+  const setTheme = (newTheme: Theme) => {
+    setThemeState(newTheme);
+    if (mounted) {
+      localStorage.setItem('makrx-theme', newTheme);
+    }
+  };
 
-    // Also set data-theme attribute for additional CSS selector support
-    // Allows selectors like [data-theme="dark"] for more specific styling
-    root.setAttribute('data-theme', effectiveTheme);
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <div style={{ visibility: 'hidden' }}>
+        {children}
+      </div>
+    );
+  }
 
-    // Persist user's theme preference (not the effective theme)
-    // This ensures we remember if user chose 'system', 'light', or 'dark'
-    localStorage.setItem('makrx-theme', theme);
-  }, [theme, effectiveTheme]);
-
-  // Create context value object
   const value: ThemeContextType = {
-    theme,           // User's theme choice ('light', 'dark', 'system')
-    setTheme,        // Function to update theme choice
-    effectiveTheme   // Resolved theme that's actually applied ('light' or 'dark')
+    theme,
+    resolvedTheme,
+    setTheme,
+    systemTheme,
   };
 
   return (
@@ -138,35 +133,23 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 }
 
 /**
- * Hook to access theme context in components
- *
- * Provides access to:
- * - theme: Current user theme setting
- * - setTheme: Function to change theme
- * - effectiveTheme: Resolved theme being applied
- *
- * @throws Error if used outside of ThemeProvider
- *
- * @example
- * ```tsx
- * function MyComponent() {
- *   const { theme, setTheme, effectiveTheme } = useTheme();
- *
- *   return (
- *     <div className={effectiveTheme === 'dark' ? 'dark-bg' : 'light-bg'}>
- *       <button onClick={() => setTheme('dark')}>Dark Mode</button>
- *     </div>
- *   );
- * }
- * ```
+ * Hook to access theme context
+ * 
+ * @returns Theme context value
+ * @throws Error if used outside ThemeProvider
  */
-export function useTheme() {
+export function useTheme(): ThemeContextType {
   const context = useContext(ThemeContext);
-
-  // Enforce provider usage - prevents runtime errors from missing context
   if (context === undefined) {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
-
   return context;
 }
+
+/**
+ * Default export for convenience
+ */
+export default {
+  ThemeProvider,
+  useTheme,
+};

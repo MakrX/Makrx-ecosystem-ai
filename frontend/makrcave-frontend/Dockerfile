@@ -1,5 +1,5 @@
 # Build stage
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 # Set working directory
 WORKDIR /app
@@ -28,7 +28,14 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Create nginx user and set permissions
 RUN addgroup -g 1001 -S nginx-custom && \
     adduser -S nginx-custom -G nginx-custom && \
-    chown -R nginx-custom:nginx-custom /usr/share/nginx/html
+    chown -R nginx-custom:nginx-custom /usr/share/nginx/html && \
+    chown -R nginx-custom:nginx-custom /var/cache/nginx && \
+    chown -R nginx-custom:nginx-custom /var/log/nginx && \
+    mkdir -p /var/run/nginx && \
+    chown -R nginx-custom:nginx-custom /var/run/nginx
+
+# Switch to non-root user
+USER nginx-custom
 
 # Expose port 80
 EXPOSE 80

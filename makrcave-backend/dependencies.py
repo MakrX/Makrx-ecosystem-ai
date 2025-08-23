@@ -14,6 +14,7 @@ from schemas.auth_error import AuthError
 from security import jwks
 from security.events import SecurityEventType, log_security_event
 from security.helpers import set_request_context
+from security.jwt_validator import SecureJWTValidator
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -28,6 +29,9 @@ JWKS_URL = f"{KEYCLOAK_ISSUER}/protocol/openid-connect/certs"
 ALLOWED_ALGS = {"RS256"}
 
 security = HTTPBearer()
+
+# Initialize standardized JWT validator
+jwt_validator = SecureJWTValidator(KEYCLOAK_URL, KEYCLOAK_REALM, KEYCLOAK_AUDIENCE)
 
 
 class CurrentUser:
@@ -46,118 +50,18 @@ class CurrentUser:
         self.makerspace_id = makerspace_id
 
 
-async def validate_token(token: str, request_id: Optional[str] = None) -> dict:
-    """Validate token using Keycloak JWKS"""
+async def validate_token(token: str, request: Request) -> dict:
+    """Validate token using standardized secure JWT validator"""
     try:
         header = jwt.get_unverified_header(token)
         kid = header.get("kid")
-        alg = header.get("alg")
 
         key = await jwks.get_jwk(kid, JWKS_URL)
 
-        payload = jwt.decode(
-            token,
-            key,
-            algorithms=[alg],
-            options={
-                "verify_aud": False,
-                "verify_iss": False,
-                "verify_iat": False,
-                "verify_nbf": False,
-                "verify_exp": False,
-            },
-        )
+        # Use standardized validator for comprehensive security checks
+        payload = await jwt_validator.validate_token(token, key, request)
 
-        if payload.get("iss") != KEYCLOAK_ISSUER:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=AuthError(
-                    error="Unauthorized",
-                    message="Invalid token issuer",
-                    code="invalid_issuer",
-                    request_id=request_id,
-                ).model_dump(),
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-
-        aud_claim = payload.get("aud", [])
-        if isinstance(aud_claim, str):
-            aud_claim = [aud_claim]
-        if KEYCLOAK_AUDIENCE not in aud_claim:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=AuthError(
-                    error="Unauthorized",
-                    message="Invalid token audience",
-                    code="invalid_audience",
-                    request_id=request_id,
-                ).model_dump(),
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-
-        current_ts = datetime.utcnow().timestamp()
-        leeway = 60
-        exp = payload.get("exp")
-        if exp and exp < current_ts - leeway:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=AuthError(
-                    error="Unauthorized",
-                    message="Token has expired",
-                    code="token_expired",
-                    request_id=request_id,
-                ).model_dump(),
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        nbf = payload.get("nbf")
-        if nbf and nbf >= current_ts + leeway:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=AuthError(
-                    error="Unauthorized",
-                    message="Token not yet valid",
-                    code="token_not_yet_valid",
-                    request_id=request_id,
-                ).model_dump(),
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        iat = payload.get("iat")
-        if iat and iat > current_ts + leeway:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=AuthError(
-                    error="Unauthorized",
-                    message="Invalid token issued-at",
-                    code="invalid_iat",
-                    request_id=request_id,
-                ).model_dump(),
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-
-        if alg not in ALLOWED_ALGS:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=AuthError(
-                    error="Unauthorized",
-                    message="Invalid token algorithm",
-                    code="invalid_algorithm",
-                    request_id=request_id,
-                ).model_dump(),
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-
-        if payload.get("typ") != "Bearer":
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=AuthError(
-                    error="Unauthorized",
-                    message="Invalid token type",
-                    code="invalid_token_type",
-                    request_id=request_id,
-                ).model_dump(),
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-
+        # Extract and filter user information
         filtered_payload = {
             "sub": payload.get("sub"),
             "email": payload.get("email"),
@@ -171,7 +75,7 @@ async def validate_token(token: str, request_id: Optional[str] = None) -> dict:
         return filtered_payload
     except HTTPException:
         raise
-    except JWTError as exc:
+    except Exception as exc:
         logger.error(f"Token validation error: {exc}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -211,7 +115,7 @@ async def get_current_token(
 
     request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
     token = credentials.credentials
-    payload = await validate_token(token, request_id=request_id)
+    payload = await validate_token(token, request)
     set_request_context(
         request_id=request_id,
         sub=payload.get("sub"),

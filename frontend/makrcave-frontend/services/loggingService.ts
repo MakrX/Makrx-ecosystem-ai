@@ -64,15 +64,17 @@ class LoggingService {
 
   private initializeRemoteLogging(): void {
     // Check for cloud environment and set remote logging endpoint
-    const isCloudEnvironment = window.location.hostname !== 'localhost';
-    if (isCloudEnvironment && this.config.enableRemoteLogging) {
-      this.remoteEndpoint = '/api/logging/submit';
+    if (typeof window !== 'undefined') {
+      const isCloudEnvironment = window.location.hostname !== 'localhost';
+      if (isCloudEnvironment && this.config.enableRemoteLogging) {
+        this.remoteEndpoint = '/api/logging/submit';
+      }
     }
   }
 
   private loadPersistedLogs(): void {
-    if (!this.config.persistLogs) return;
-    
+    if (!this.config.persistLogs || typeof window === 'undefined') return;
+
     try {
       const stored = localStorage.getItem('makrcave_logs');
       if (stored) {
@@ -85,6 +87,8 @@ class LoggingService {
   }
 
   private setupGlobalErrorHandlers(): void {
+    if (typeof window === 'undefined') return;
+
     // Global error handler for unhandled errors
     window.addEventListener('error', (event) => {
       this.error('system', 'Global Error Handler', event.error?.message || 'Unknown error', {
@@ -147,17 +151,19 @@ class LoggingService {
       message,
       metadata,
       sessionId: this.sessionId,
-      url: window.location.href,
-      userAgent: navigator.userAgent,
+      url: typeof window !== 'undefined' ? window.location.href : '',
+      userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
       stackTrace
     };
 
     // Add user context if available
     try {
-      const authContext = JSON.parse(localStorage.getItem('auth_context') || '{}');
-      if (authContext.user) {
-        entry.userId = authContext.user.id;
-        entry.userRole = authContext.user.role;
+      if (typeof window !== 'undefined') {
+        const authContext = JSON.parse(localStorage.getItem('auth_context') || '{}');
+        if (authContext.user) {
+          entry.userId = authContext.user.id;
+          entry.userRole = authContext.user.role;
+        }
       }
     } catch (error) {
       // Ignore auth context errors
@@ -218,12 +224,14 @@ class LoggingService {
 
   private persistLogs(): void {
     try {
-      // Only persist error and critical logs to save space
-      const criticalLogs = this.logs.filter(log => 
-        ['error', 'critical'].includes(log.level)
-      ).slice(0, 50);
-      
-      localStorage.setItem('makrcave_logs', JSON.stringify(criticalLogs));
+      if (typeof window !== 'undefined') {
+        // Only persist error and critical logs to save space
+        const criticalLogs = this.logs.filter(log =>
+          ['error', 'critical'].includes(log.level)
+        ).slice(0, 50);
+
+        localStorage.setItem('makrcave_logs', JSON.stringify(criticalLogs));
+      }
     } catch (error) {
       console.warn('Failed to persist logs:', error);
     }
@@ -412,7 +420,7 @@ class LoggingService {
 
   clearLogs(): void {
     this.logs = [];
-    if (this.config.persistLogs) {
+    if (this.config.persistLogs && typeof window !== 'undefined') {
       localStorage.removeItem('makrcave_logs');
     }
   }

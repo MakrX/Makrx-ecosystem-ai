@@ -4,7 +4,7 @@
 import loggingService from './loggingService';
 import auth from '../lib/auth';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || '/api';
 
 interface ApiResponse<T> {
   data?: T;

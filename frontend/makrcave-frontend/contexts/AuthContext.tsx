@@ -3,6 +3,8 @@
 // ========================================
 // Provides authentication state and methods using Keycloak JS adapter
 
+'use client';
+
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { UserRole, RolePermissions } from '@makrx/types';
 import { getRolePermissions, hasPermission, UI_ACCESS } from '../config/rolePermissions';
@@ -160,4 +162,3 @@ export function useAuth() {
   }
   return context;
 }
-

@@ -4,14 +4,14 @@
  */
 
 import Keycloak, { KeycloakInstance, KeycloakLoginOptions } from "keycloak-js";
-import { logoutFromSSO, redirectToSSO } from "../../makrx-sso-utils.js";
+import { logoutFromSSO, redirectToSSO } from "./sso-utils";
 
 // Configuration
 const KEYCLOAK_URL =
-  import.meta.env.VITE_KEYCLOAK_URL || "https://auth.makrx.org";
-const REALM = import.meta.env.VITE_KEYCLOAK_REALM || "makrx";
+  process.env.NEXT_PUBLIC_KEYCLOAK_URL || "https://auth.makrx.org";
+const REALM = process.env.NEXT_PUBLIC_KEYCLOAK_REALM || "makrx";
 const CLIENT_ID =
-  import.meta.env.VITE_KEYCLOAK_CLIENT_ID || "makrx-cave";
+  process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID || "makrx-cave";
 
 // Types
 export interface User {
@@ -24,12 +24,19 @@ export interface User {
   scopes: string[];
 }
 
-// Keycloak instance
-const keycloak: KeycloakInstance = new Keycloak({
-  url: KEYCLOAK_URL,
-  realm: REALM,
-  clientId: CLIENT_ID,
-});
+// Keycloak instance - only initialize on client side
+let keycloak: KeycloakInstance | null = null;
+
+const getKeycloak = (): KeycloakInstance => {
+  if (!keycloak && typeof window !== 'undefined') {
+    keycloak = new Keycloak({
+      url: KEYCLOAK_URL,
+      realm: REALM,
+      clientId: CLIENT_ID,
+    });
+  }
+  return keycloak!;
+};
 
 // Auth state management
 let authListeners: Array<(user: User | null) => void> = [];
@@ -41,7 +48,8 @@ const isClient = typeof window !== "undefined";
 export const init = async (): Promise<boolean> => {
   if (!isClient) return false;
   if (!initPromise) {
-    initPromise = keycloak
+    const kc = getKeycloak();
+    initPromise = kc
       .init({
         onLoad: "check-sso",
         pkceMethod: "S256",
@@ -50,8 +58,8 @@ export const init = async (): Promise<boolean> => {
       })
       .then((authenticated) => {
         if (authenticated) {
-          if (keycloak.token) {
-            localStorage.setItem('auth_token', keycloak.token);
+          if (kc.token) {
+            localStorage.setItem('auth_token', kc.token);
           }
           notifyAuthListeners(getCurrentUser());
         }
@@ -59,11 +67,11 @@ export const init = async (): Promise<boolean> => {
       });
 
     // Automatic token refresh
-    keycloak.onTokenExpired = async () => {
+    kc.onTokenExpired = async () => {
       try {
-        await keycloak.updateToken(60);
-        if (keycloak.token) {
-          localStorage.setItem('auth_token', keycloak.token);
+        await kc.updateToken(60);
+        if (kc.token) {
+          localStorage.setItem('auth_token', kc.token);
         }
         notifyAuthListeners(getCurrentUser());
       } catch {
@@ -79,13 +87,14 @@ export const init = async (): Promise<boolean> => {
 // Token management
 export const getToken = async (): Promise<string | null> => {
   await init();
-  if (!keycloak.authenticated) return null;
+  const kc = getKeycloak();
+  if (!kc.authenticated) return null;
   try {
-    await keycloak.updateToken(60);
-    if (keycloak.token) {
-      localStorage.setItem('auth_token', keycloak.token);
+    await kc.updateToken(60);
+    if (kc.token) {
+      localStorage.setItem('auth_token', kc.token);
     }
-    return keycloak.token ?? null;
+    return kc.token ?? null;
   } catch {
     sessionStorage.setItem("makrx_redirect_url", window.location.href);
     window.alert("Session expired. Please log in again.");
@@ -96,7 +105,9 @@ export const getToken = async (): Promise<string | null> => {
 
 // User helpers
 export const getCurrentUser = (): User | null => {
-  const parsed = keycloak.tokenParsed as Record<string, any> | undefined;
+  if (typeof window === 'undefined') return null;
+  const kc = getKeycloak();
+  const parsed = kc.tokenParsed as Record<string, any> | undefined;
   if (!parsed) return null;
   return {
     sub: parsed.sub,
@@ -109,10 +120,17 @@ export const getCurrentUser = (): User | null => {
   };
 };
 
-export const isAuthenticated = (): boolean => !!keycloak.authenticated;
+export const isAuthenticated = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  const kc = getKeycloak();
+  return !!kc.authenticated;
+};
 
-export const hasRole = (role: string): boolean =>
-  keycloak.hasRealmRole ? keycloak.hasRealmRole(role) : false;
+export const hasRole = (role: string): boolean => {
+  if (typeof window === 'undefined') return false;
+  const kc = getKeycloak();
+  return kc.hasRealmRole ? kc.hasRealmRole(role) : false;
+};
 
 export const hasAnyRole = (roles: string[]): boolean =>
   roles.some((r) => hasRole(r));
@@ -128,7 +146,8 @@ export const login = (options?: KeycloakLoginOptions): void => {
 
   // Store original URL for redirect after login
   sessionStorage.setItem("makrx_redirect_url", window.location.href);
-  keycloak.login({
+  const kc = getKeycloak();
+  kc.login({
     redirectUri: window.location.origin + "/auth/callback",
     ...options,
   });
@@ -137,7 +156,8 @@ export const login = (options?: KeycloakLoginOptions): void => {
 export const register = (options?: KeycloakLoginOptions): void => {
   if (!isClient) return;
   sessionStorage.setItem("makrx_redirect_url", window.location.href);
-  keycloak.register({
+  const kc = getKeycloak();
+  kc.register({
     redirectUri: window.location.origin + "/auth/callback",
     ...options,
   });
@@ -187,17 +207,18 @@ const notifyAuthListeners = (user: User | null): void => {
 if (isClient) {
   init();
   setInterval(async () => {
-    if (keycloak.authenticated) {
+    const kc = getKeycloak();
+    if (kc && kc.authenticated) {
       try {
-        const refreshed = await keycloak.updateToken(60);
+        const refreshed = await kc.updateToken(60);
         if (refreshed) {
-          if (keycloak.token) {
-            localStorage.setItem('auth_token', keycloak.token);
+          if (kc.token) {
+            localStorage.setItem('auth_token', kc.token);
           }
           notifyAuthListeners(getCurrentUser());
         }
       } catch {
-        keycloak.clearToken();
+        kc.clearToken();
         notifyAuthListeners(null);
       }
     }
@@ -222,4 +243,3 @@ export const auth = {
 };
 
 export default auth;
-

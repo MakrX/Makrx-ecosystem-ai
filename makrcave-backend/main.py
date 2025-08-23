@@ -6,6 +6,7 @@ import os
 
 # Import security middleware
 from middleware.security import add_security_middleware
+from middleware.error_handling import ErrorHandlingMiddleware
 
 from routes import api_router
 
@@ -55,7 +56,10 @@ app.add_middleware(
 # Add security middleware (after CORS)
 add_security_middleware(app)
 
-# Global exception handler
+# Add unified error handling middleware
+app.add_middleware(ErrorHandlingMiddleware)
+
+# Global exception handler (fallback)
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):
     return JSONResponse(

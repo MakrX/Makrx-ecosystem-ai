@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { 
   MapPin, Phone, Mail, Globe, Twitter, Linkedin, Instagram, 
   Youtube, Github, ArrowRight, Heart, ExternalLink
@@ -84,7 +86,7 @@ export default function Footer() {
           {/* Company Information */}
           <div className="lg:col-span-4">
             <div className="mb-6">
-              <Link to="/" className="flex items-center gap-3 group">
+              <Link href="/" className="flex items-center gap-3 group">
                 <img 
                   src="https://cdn.builder.io/api/v1/assets/f367f5e46f75423a83d3f29fae529dbb/botlogofinal-c921e6?format=webp&width=800" 
                   alt="MakrBot" 
@@ -136,7 +138,7 @@ export default function Footer() {
                     {section.links.map((link) => (
                       <li key={link.name}>
                         <Link
-                          to={link.href}
+                          href={link.href}
                           className="group flex flex-col text-gray-400 hover:text-white transition-colors"
                         >
                           <span className="font-medium group-hover:text-makrx-yellow transition-colors">
@@ -188,7 +190,7 @@ export default function Footer() {
             </form>
             <p id="newsletter-description" className="text-xs text-gray-500 mt-3">
               No spam, unsubscribe anytime. Read our{' '}
-              <Link to="/privacy" className="text-makrx-yellow hover:underline">
+              <Link href="/privacy" className="text-makrx-yellow hover:underline">
                 Privacy Policy
               </Link>
             </p>
@@ -242,7 +244,7 @@ export default function Footer() {
               {legalLinks.map((link, index) => (
                 <React.Fragment key={link.name}>
                   <Link
-                    to={link.href}
+                    href={link.href}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
                     {link.name}
